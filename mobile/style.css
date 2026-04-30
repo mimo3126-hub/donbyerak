@@ -361,24 +361,17 @@ body {
 
 /* ── 미션 상황 텍스트 ── */
 .mission-box {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  top: 55%;
-  background: rgba(0,0,0,0.84);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 10px;
-  font-size: 20px;
+  padding: 5px 8px;
+  font-size: 13px;
   font-weight: 700;
   font-family: 'Gaegu', 'Jua', 'Malgun Gothic', sans-serif;
   color: #FFD700;
   text-align: center;
-  line-height: 1.3;
+  line-height: 1.35;
   word-break: keep-all;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
   pointer-events: none;
-  z-index: 20;
+  border-top: 1px solid rgba(255,215,0,0.2);
   transition: color 0.4s ease;
 }
 .mission-box.high {
