@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 220">
+  <defs>
+    <clipPath id="bc1k"><rect width="440" height="220" rx="10"/></clipPath>
+    <radialGradient id="portraitBg1k" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#90B8D8"/>
+      <stop offset="100%" stop-color="#4A80B0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Main background -->
+  <rect width="440" height="220" rx="10" fill="#90B8D8"/>
+
+  <!-- Dosan Seodang building (center) -->
+  <rect clip-path="url(#bc1k)" x="92" y="120" width="85" height="55" fill="#7898B8"/>
+  <rect clip-path="url(#bc1k)" x="88" y="112" width="93" height="12" fill="#2A5E8E"/>
+  <polygon clip-path="url(#bc1k)" points="88,112 134,88 181,112" fill="#2A5E8E"/>
+  <polygon clip-path="url(#bc1k)" points="91,112 134,91 177,112" fill="#3A72A8"/>
+  <rect clip-path="url(#bc1k)" x="102" y="108" width="64" height="7" rx="2" fill="#1A4070"/>
+  <!-- Windows -->
+  <rect clip-path="url(#bc1k)" x="104" y="130" width="16" height="20" fill="#4A78A8"/>
+  <rect clip-path="url(#bc1k)" x="126" y="130" width="16" height="20" fill="#4A78A8"/>
+  <rect clip-path="url(#bc1k)" x="148" y="130" width="16" height="20" fill="#4A78A8"/>
+  <rect clip-path="url(#bc1k)" x="84" y="173" width="101" height="7" rx="2" fill="#1A4070"/>
+  <rect clip-path="url(#bc1k)" x="90" y="179" width="89" height="6" fill="#2A5888"/>
+  <rect clip-path="url(#bc1k)" x="95" y="184" width="79" height="6" fill="#2A5080"/>
+  <rect clip-path="url(#bc1k)" x="84" y="189" width="101" height="31" fill="#6888A8"/>
+
+  <!-- Mountains/hills in background -->
+  <ellipse clip-path="url(#bc1k)" cx="170" cy="115" rx="55" ry="40" fill="#6090B0" opacity="0.6"/>
+  <ellipse clip-path="url(#bc1k)" cx="220" cy="120" rx="45" ry="35" fill="#5080A0" opacity="0.5"/>
+
+  <!-- Left dark strip -->
+  <rect clip-path="url(#bc1k)" x="0" y="0" width="68" height="220" fill="#2A5E8E"/>
+  <rect clip-path="url(#bc1k)" x="68" y="0" width="4" height="220" fill="#1A4070"/>
+
+  <!-- Vertical "1000" on left -->
+  <text clip-path="url(#bc1k)" transform="translate(38,195) rotate(-90)" font-size="13" fill="white" font-family="Arial, sans-serif" font-weight="bold" letter-spacing="3">1000</text>
+  <text clip-path="url(#bc1k)" transform="translate(18,130) rotate(-90)" font-size="10" fill="rgba(255,255,255,0.6)" font-family="Arial">• • •</text>
+
+  <!-- Portrait area -->
+  <rect clip-path="url(#bc1k)" x="283" y="0" width="157" height="220" fill="url(#portraitBg1k)"/>
+  <rect clip-path="url(#bc1k)" x="283" y="0" width="4" height="220" fill="#1A4070"/>
+
+  <!-- Yi Hwang (퇴계 이황) portrait -->
+  <!-- Body/robe -->
+  <path clip-path="url(#bc1k)" d="M 295 220 L 295 158 Q 360 142 425 158 L 425 220 Z" fill="#D0D8E8"/>
+  <path clip-path="url(#bc1k)" d="M 335 160 Q 360 153 385 160" stroke="#A0B0C8" stroke-width="3" fill="none"/>
+  <!-- Neck -->
+  <rect clip-path="url(#bc1k)" x="348" y="140" width="24" height="22" rx="5" fill="#C0A888"/>
+  <!-- Head -->
+  <ellipse clip-path="url(#bc1k)" cx="360" cy="108" rx="41" ry="45" fill="#C0A888"/>
+  <!-- Black hat (탕건/복두) -->
+  <ellipse clip-path="url(#bc1k)" cx="360" cy="66" rx="44" ry="11" fill="#1A1410"/>
+  <rect clip-path="url(#bc1k)" x="328" y="52" width="64" height="18" rx="3" fill="#201810"/>
+  <rect clip-path="url(#bc1k)" x="340" y="40" width="40" height="15" rx="3" fill="#1A1410"/>
+  <ellipse clip-path="url(#bc1k)" cx="360" cy="40" rx="20" ry="8" fill="#1A1410"/>
+  <!-- White brim -->
+  <rect clip-path="url(#bc1k)" x="322" y="67" width="76" height="5" rx="2" fill="#C8D0DC"/>
+  <!-- Facial features -->
+  <ellipse cx="347" cy="100" rx="6" ry="4" fill="#6A5030"/>
+  <ellipse cx="373" cy="100" rx="6" ry="4" fill="#6A5030"/>
+  <path d="M 341 93 Q 347 90 353 92" stroke="#4A3018" stroke-width="1.5" fill="none"/>
+  <path d="M 367 93 Q 373 90 379 92" stroke="#4A3018" stroke-width="1.5" fill="none"/>
+  <ellipse cx="360" cy="112" rx="4" ry="5" fill="#B09070"/>
+  <path d="M 352 122 Q 360 128 368 122" stroke="#6A4028" stroke-width="2" fill="none"/>
+  <!-- Long beard (이황 특징) -->
+  <path clip-path="url(#bc1k)" d="M 338 128 Q 340 155 355 165 Q 360 168 365 165 Q 380 155 382 128 Q 370 142 360 145 Q 350 142 338 128 Z" fill="#5A4028"/>
+  <path clip-path="url(#bc1k)" d="M 350 145 Q 360 158 370 145" stroke="#3A2818" stroke-width="1.5" fill="none"/>
+
+  <!-- Bank name -->
+  <rect clip-path="url(#bc1k)" x="90" y="10" width="185" height="35" rx="5" fill="#B0D0E8" opacity="0.5"/>
+  <text x="182" y="33" text-anchor="middle" font-size="17" fill="#0A2E5C" font-family="'Malgun Gothic', serif" font-weight="bold">한국은행</text>
+
+  <!-- Hologram circle -->
+  <circle cx="115" cy="80" r="22" fill="rgba(255,255,255,0.3)" stroke="#1A4070" stroke-width="2"/>
+  <circle cx="115" cy="80" r="15" fill="none" stroke="#1A4070" stroke-width="1.5"/>
+  <text x="115" y="84" text-anchor="middle" font-size="11" fill="#0A2E5C" font-family="serif">◎</text>
+
+  <!-- 천원 text -->
+  <text x="188" y="85" text-anchor="middle" font-size="30" fill="#0A2E5C" font-family="'Malgun Gothic', serif" font-weight="bold">천원</text>
+
+  <!-- Large 1000 number -->
+  <text x="82" y="208" font-size="38" fill="#0A2E5C" font-family="Arial, sans-serif" font-weight="bold">1000</text>
+
+  <!-- Right strip -->
+  <rect clip-path="url(#bc1k)" x="420" y="0" width="20" height="220" fill="#1A4070"/>
+  <text clip-path="url(#bc1k)" transform="translate(430,195) rotate(-90)" font-size="11" fill="#90B8D8" font-family="Arial">1000</text>
+
+  <!-- Border -->
+  <rect width="440" height="220" rx="10" fill="none" stroke="#0A2E5C" stroke-width="3"/>
+</svg>

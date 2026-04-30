@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 220">
+<defs>
+  <clipPath id="bill50k"><rect width="440" height="220" rx="8"/></clipPath>
+  <filter id="paper50k" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="4" seed="7" result="noise"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 0.95  0 0 0 0 0.85  0 0 0 -0.1 1.1" in="noise" result="colorNoise"/>
+    <feBlend in="SourceGraphic" in2="colorNoise" mode="multiply"/>
+    <feComposite in2="SourceGraphic" operator="in"/>
+  </filter>
+  <filter id="intaglio50k">
+    <feGaussianBlur stdDeviation="0.35" result="blur"/>
+    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+  </filter>
+  <linearGradient id="bg50k" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%"   stop-color="#F0E098"/>
+    <stop offset="30%"  stop-color="#EDD880"/>
+    <stop offset="60%"  stop-color="#E8CE78"/>
+    <stop offset="100%" stop-color="#DEC068"/>
+  </linearGradient>
+  <radialGradient id="portBg50k" cx="50%" cy="40%" r="60%">
+    <stop offset="0%"   stop-color="#F2E4A0"/>
+    <stop offset="55%"  stop-color="#D4B85A"/>
+    <stop offset="100%" stop-color="#B89830"/>
+  </radialGradient>
+  <radialGradient id="holo50k" cx="40%" cy="38%" r="55%">
+    <stop offset="0%"   stop-color="#FFFAE0"/>
+    <stop offset="20%"  stop-color="#FFE060"/>
+    <stop offset="40%"  stop-color="#FFC020"/>
+    <stop offset="65%"  stop-color="#FFD840"/>
+    <stop offset="85%"  stop-color="#FFE880"/>
+    <stop offset="100%" stop-color="#FFF4C0"/>
+  </radialGradient>
+  <linearGradient id="thread50k" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#A08010" stop-opacity="0.9"/>
+    <stop offset="30%"  stop-color="#D4B030" stop-opacity="0.8"/>
+    <stop offset="60%"  stop-color="#906000" stop-opacity="0.9"/>
+    <stop offset="100%" stop-color="#C09820" stop-opacity="0.8"/>
+  </linearGradient>
+  <radialGradient id="skin50k" cx="50%" cy="40%" r="58%">
+    <stop offset="0%"   stop-color="#E8C878"/>
+    <stop offset="45%"  stop-color="#D4A850"/>
+    <stop offset="80%"  stop-color="#B88830"/>
+    <stop offset="100%" stop-color="#8A6018"/>
+  </radialGradient>
+  <linearGradient id="hanbok50k" x1="0.2" y1="0" x2="0.8" y2="1">
+    <stop offset="0%"   stop-color="#B89030"/>
+    <stop offset="50%"  stop-color="#907010"/>
+    <stop offset="100%" stop-color="#604800"/>
+  </linearGradient>
+  <pattern id="guill50k" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+    <path d="M0,2 Q1,0.5 2,2 Q3,3.5 4,2" fill="none" stroke="#B89030" stroke-width="0.28" opacity="0.4"/>
+  </pattern>
+</defs>
+
+<!-- Base background -->
+<rect width="440" height="220" rx="8" fill="url(#bg50k)" filter="url(#paper50k)"/>
+<rect clip-path="url(#bill50k)" width="440" height="220" fill="url(#guill50k)" opacity="0.5"/>
+
+<!-- Left dark strip -->
+<rect clip-path="url(#bill50k)" x="0" y="0" width="62" height="220" fill="#A07818"/>
+<rect clip-path="url(#bill50k)" x="62" y="0" width="2.5" height="220" fill="#806000"/>
+<text clip-path="url(#bill50k)" transform="translate(31,205) rotate(-90)" font-size="12" fill="rgba(255,255,255,0.85)" font-family="Arial,sans-serif" font-weight="bold" letter-spacing="4">50000 • • •</text>
+<rect clip-path="url(#bill50k)" x="8" y="0" width="0.5" height="220" fill="rgba(255,255,255,0.15)"/>
+<rect clip-path="url(#bill50k)" x="54" y="0" width="0.5" height="220" fill="rgba(255,255,255,0.15)"/>
+
+<!-- Security thread -->
+<rect clip-path="url(#bill50k)" x="144" y="0" width="5" height="220" fill="url(#thread50k)" opacity="0.7"/>
+
+<!-- Background design — bamboo & orchid (대나무와 난초) -->
+<!-- Bamboo stalks -->
+<g clip-path="url(#bill50k)" opacity="0.5">
+  <rect x="88"  y="30" width="5"   height="155" fill="#7A9030"/>
+  <rect x="102" y="50" width="4.5" height="140" fill="#6A8020"/>
+  <rect x="116" y="40" width="5"   height="150" fill="#7A9030"/>
+  <rect x="130" y="55" width="4"   height="130" fill="#6A8020"/>
+  <!-- Bamboo nodes -->
+  <rect x="87"  y="80"  width="7" height="3" rx="1" fill="#5A7020"/>
+  <rect x="87"  y="110" width="7" height="3" rx="1" fill="#5A7020"/>
+  <rect x="87"  y="140" width="7" height="3" rx="1" fill="#5A7020"/>
+  <rect x="101" y="90"  width="6" height="3" rx="1" fill="#5A7020"/>
+  <rect x="101" y="125" width="6" height="3" rx="1" fill="#5A7020"/>
+  <rect x="115" y="75"  width="7" height="3" rx="1" fill="#5A7020"/>
+  <rect x="115" y="115" width="7" height="3" rx="1" fill="#5A7020"/>
+  <!-- Bamboo leaves -->
+  <path d="M 93,80 Q110,65 125,72" stroke="#5A7820" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 88,110 Q72,95 60,100" stroke="#5A7820" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 121,75 Q138,60 148,68" stroke="#5A7820" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M 110,125 Q95,112 82,118" stroke="#5A7820" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</g>
+<!-- Orchid flower (난초) -->
+<g clip-path="url(#bill50k)" opacity="0.55">
+  <path d="M 200,160 Q195,145 188,140 Q192,150 195,165 Z" fill="#D4A040"/>
+  <path d="M 200,160 Q215,148 220,140 Q212,152 205,166 Z" fill="#C89030"/>
+  <path d="M 200,160 Q185,168 180,180 Q190,170 205,168 Z" fill="#B88020"/>
+  <path d="M 200,160 Q218,172 225,183 Q212,170 205,168 Z" fill="#C89030"/>
+  <circle cx="200" cy="160" r="6" fill="#E8B030" opacity="0.8"/>
+  <!-- Leaves -->
+  <path d="M 200,180 Q185,195 175,210" stroke="#7A9030" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M 200,180 Q220,192 235,208" stroke="#6A8020" stroke-width="3" fill="none" stroke-linecap="round"/>
+</g>
+
+<!-- Hologram circle -->
+<circle cx="115" cy="72" r="26" fill="url(#holo50k)" opacity="0.82" stroke="#A07818" stroke-width="1.5"/>
+<circle cx="115" cy="72" r="20" fill="none" stroke="#806000" stroke-width="0.8" opacity="0.5"/>
+<circle cx="115" cy="72" r="13" fill="none" stroke="#806000" stroke-width="0.5" opacity="0.35"/>
+<text x="115" y="76" text-anchor="middle" font-size="11" fill="#604800" font-family="serif" opacity="0.65">◎</text>
+
+<!-- Bank name -->
+<text x="205" y="24" text-anchor="middle" font-size="14" fill="#604800" font-family="'Malgun Gothic','Apple SD Gothic Neo',serif" font-weight="bold" letter-spacing="3" opacity="0.9">한국은행</text>
+<!-- 오만원 -->
+<text x="205" y="58" text-anchor="middle" font-size="26" fill="#4A3400" font-family="'Malgun Gothic',serif" font-weight="900" opacity="0.92">오만원</text>
+<text x="205" y="78" text-anchor="middle" font-size="7.5" fill="#806000" font-family="serif" opacity="0.6" letter-spacing="2">BANK OF KOREA</text>
+
+<!-- Portrait area -->
+<rect clip-path="url(#bill50k)" x="285" y="0" width="155" height="220" fill="url(#portBg50k)" opacity="0.9"/>
+<rect clip-path="url(#bill50k)" x="285" y="0" width="2" height="220" fill="#806000" opacity="0.7"/>
+
+<!-- Shin Saimdang portrait (신사임당) — intaglio style -->
+<g clip-path="url(#bill50k)" filter="url(#intaglio50k)">
+  <!-- Hanbok body -->
+  <path d="M 295 220 L 298 158 Q 330 144 362 141 Q 395 144 425 158 L 425 220 Z" fill="url(#hanbok50k)"/>
+  <!-- Jeogori (jacket) -->
+  <path d="M 320 158 Q 362 150 404 158 L 402 178 Q 362 168 322 178 Z" fill="#C8A040"/>
+  <!-- Collar bow (고름) -->
+  <path d="M 354 155 Q 362 164 370 155" stroke="#F0E0A0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Collar line -->
+  <path d="M 336 162 Q 362 155 388 162" stroke="#E0C060" stroke-width="1.5" fill="none"/>
+
+  <!-- Neck -->
+  <rect x="351" y="140" width="22" height="24" rx="8" fill="#D4A050"/>
+  <rect x="351" y="152" width="22" height="12" rx="4" fill="#B88030" opacity="0.45"/>
+
+  <!-- Head (face) -->
+  <ellipse cx="362" cy="105" rx="44" ry="48" fill="url(#skin50k)"/>
+  <!-- Face shading -->
+  <ellipse cx="338" cy="110" rx="13" ry="16" fill="#C09040" opacity="0.3"/>
+  <ellipse cx="386" cy="110" rx="13" ry="16" fill="#C09040" opacity="0.3"/>
+  <ellipse cx="362" cy="80" rx="28" ry="18" fill="#E8C870" opacity="0.25"/>
+
+  <!-- ── Elaborate hair (전통 가체) ── -->
+  <!-- Main hair bun (비녀로 묶은 머리) -->
+  <ellipse cx="362" cy="64" rx="40" ry="24" fill="#1A1408"/>
+  <ellipse cx="362" cy="58" rx="32" ry="18" fill="#241C0C"/>
+  <ellipse cx="362" cy="52" rx="22" ry="12" fill="#181008"/>
+  <!-- Hair bun top -->
+  <ellipse cx="362" cy="44" rx="14" ry="10" fill="#0E0A04"/>
+  <!-- Hairpin (비녀) -->
+  <path d="M 335 56 L 389 56" stroke="#C8A020" stroke-width="2.5"/>
+  <circle cx="393" cy="56" r="5" fill="#D4B030"/>
+  <circle cx="393" cy="56" r="3" fill="#E8C840"/>
+  <!-- Side hair -->
+  <ellipse cx="320" cy="88" rx="10" ry="18" fill="#1A1408"/>
+  <ellipse cx="404" cy="88" rx="10" ry="18" fill="#1A1408"/>
+  <!-- Hair texture lines -->
+  <path d="M 325 78 Q 322 95 326 112" stroke="#0A0804" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M 399 78 Q 402 95 398 112" stroke="#0A0804" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <!-- Forehead wisps -->
+  <path d="M 338 70 Q 345 74 352 72" stroke="#241C0C" stroke-width="1.2" fill="none"/>
+  <path d="M 334 76 Q 340 79 346 77" stroke="#241C0C" stroke-width="1" fill="none"/>
+
+  <!-- ── Facial features ── -->
+  <!-- Eyebrows (delicate curved) -->
+  <path d="M 342 90 Q 350 86 358 89" stroke="#4A3010" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <path d="M 366 89 Q 374 86 382 90" stroke="#4A3010" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+
+  <!-- Eye sockets shadow -->
+  <ellipse cx="349" cy="100" rx="10" ry="7" fill="#B08030" opacity="0.3"/>
+  <ellipse cx="375" cy="100" rx="10" ry="7" fill="#B08030" opacity="0.3"/>
+
+  <!-- Eyes (almond shaped, elegant) -->
+  <ellipse cx="349" cy="100" rx="8.5" ry="5.5" fill="#EED8A0"/>
+  <ellipse cx="375" cy="100" rx="8.5" ry="5.5" fill="#EED8A0"/>
+  <!-- Iris -->
+  <ellipse cx="349" cy="100" rx="5.5" ry="5.5" fill="#1A0E04"/>
+  <ellipse cx="375" cy="100" rx="5.5" ry="5.5" fill="#1A0E04"/>
+  <!-- Pupil -->
+  <circle cx="349" cy="100" r="2.8" fill="#040200"/>
+  <circle cx="375" cy="100" r="2.8" fill="#040200"/>
+  <!-- Eye highlight -->
+  <circle cx="351" cy="98" r="1.4" fill="rgba(255,255,255,0.75)"/>
+  <circle cx="377" cy="98" r="1.4" fill="rgba(255,255,255,0.75)"/>
+  <!-- Eyelids -->
+  <path d="M 341 97 Q 349 93 357 97" stroke="#3A2010" stroke-width="1.5" fill="none"/>
+  <path d="M 367 97 Q 375 93 383 97" stroke="#3A2010" stroke-width="1.5" fill="none"/>
+  <path d="M 341 103 Q 349 106 357 103" stroke="#3A2010" stroke-width="0.9" fill="none"/>
+  <path d="M 367 103 Q 375 106 383 103" stroke="#3A2010" stroke-width="0.9" fill="none"/>
+
+  <!-- Nose (small, elegant) -->
+  <path d="M 362 107 Q 358 115 356 121 Q 353 126 357 128 Q 362 130 367 128 Q 371 126 368 121 Q 366 115 362 107" fill="#C09040" opacity="0.5"/>
+  <ellipse cx="358" cy="126" rx="3.5" ry="2.5" fill="#A07828" opacity="0.5"/>
+  <ellipse cx="366" cy="126" rx="3.5" ry="2.5" fill="#A07828" opacity="0.5"/>
+
+  <!-- Lips (small, elegant) -->
+  <path d="M 352 135 Q 362 140 372 135" fill="#C07848" opacity="0.8"/>
+  <path d="M 352 135 Q 362 131 372 135" fill="#D08858" opacity="0.6"/>
+  <path d="M 352 135 Q 362 140 372 135" stroke="#8A4820" stroke-width="1.2" fill="none"/>
+
+  <!-- Chin dimple -->
+  <ellipse cx="362" cy="144" rx="5" ry="3" fill="#C09040" opacity="0.2"/>
+
+  <!-- Ear -->
+  <ellipse cx="319" cy="108" rx="6" ry="11" fill="#D4A050" opacity="0.8"/>
+  <ellipse cx="405" cy="108" rx="6" ry="11" fill="#D4A050" opacity="0.8"/>
+  <!-- Earring -->
+  <circle cx="319" cy="118" r="4" fill="#D4B030" opacity="0.7"/>
+  <circle cx="319" cy="118" r="2" fill="#E8C840" opacity="0.8"/>
+</g>
+
+<!-- Right strip -->
+<rect clip-path="url(#bill50k)" x="420" y="0" width="20" height="220" fill="#806000"/>
+<text clip-path="url(#bill50k)" transform="translate(430,202) rotate(-90)" font-size="10" fill="rgba(255,255,255,0.7)" font-family="Arial">50000</text>
+
+<!-- Large 50000 number -->
+<text x="78" y="208" font-size="42" fill="#4A3400" font-family="Arial,sans-serif" font-weight="900" opacity="0.92">50000</text>
+
+<!-- 한은 seal -->
+<circle cx="242" cy="185" r="16" fill="none" stroke="#604800" stroke-width="1.5" opacity="0.5"/>
+<text x="242" y="189" text-anchor="middle" font-size="8" fill="#604800" font-family="serif" opacity="0.5">한은</text>
+
+<!-- Serial number -->
+<text x="78" y="30" font-size="8" fill="#604800" font-family="'Courier New',monospace" opacity="0.6" letter-spacing="1">가A 7654321 나</text>
+
+<!-- Border -->
+<rect width="440" height="220" rx="8" fill="none" stroke="#4A3400" stroke-width="2.8"/>
+<rect x="5" y="5" width="430" height="210" rx="6" fill="none" stroke="#A07818" stroke-width="0.8" opacity="0.5"/>
+</svg>

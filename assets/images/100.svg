@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <defs>
+    <clipPath id="coinClip100"><circle cx="80" cy="80" r="76"/></clipPath>
+    <radialGradient id="silverBg100" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#DCDCDC"/>
+      <stop offset="60%" stop-color="#B0B0B0"/>
+      <stop offset="100%" stop-color="#848484"/>
+    </radialGradient>
+    <radialGradient id="innerSilver100" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#D4D4D4"/>
+      <stop offset="100%" stop-color="#9C9C9C"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Outer ring -->
+  <circle cx="80" cy="80" r="78" fill="#747474"/>
+  <!-- Main coin surface -->
+  <circle cx="80" cy="80" r="74" fill="url(#silverBg100)"/>
+  <!-- Inner circle -->
+  <circle cx="80" cy="80" r="68" fill="url(#innerSilver100)"/>
+
+  <!-- Radial stripe pattern -->
+  <g clip-path="url(#coinClip100)" opacity="0.2">
+    <line x1="80" y1="80" x2="80" y2="8" stroke="white" stroke-width="6"/>
+    <line x1="80" y1="80" x2="136" y2="28" stroke="white" stroke-width="6"/>
+    <line x1="80" y1="80" x2="152" y2="80" stroke="white" stroke-width="6"/>
+    <line x1="80" y1="80" x2="136" y2="132" stroke="white" stroke-width="6"/>
+    <line x1="80" y1="80" x2="80" y2="152" stroke="white" stroke-width="6"/>
+    <line x1="80" y1="80" x2="24" y2="132" stroke="white" stroke-width="6"/>
+    <line x1="80" y1="80" x2="8" y2="80" stroke="white" stroke-width="6"/>
+    <line x1="80" y1="80" x2="24" y2="28" stroke="white" stroke-width="6"/>
+  </g>
+
+  <!-- Yi Sun-sin (이순신) portrait - simplified illustration style -->
+  <!-- Body/armor -->
+  <path clip-path="url(#coinClip100)" d="M 35 155 Q 35 130 42 120 Q 60 108 80 106 Q 100 108 118 120 Q 125 130 125 155 Z" fill="#686868"/>
+  <!-- Armor details -->
+  <path clip-path="url(#coinClip100)" d="M 55 120 Q 80 112 105 120" stroke="#505050" stroke-width="2" fill="none"/>
+  <path clip-path="url(#coinClip100)" d="M 50 130 Q 80 120 110 130" stroke="#505050" stroke-width="2" fill="none"/>
+  <!-- Shoulder guards -->
+  <rect clip-path="url(#coinClip100)" x="36" y="118" width="22" height="14" rx="4" fill="#585858"/>
+  <rect clip-path="url(#coinClip100)" x="102" y="118" width="22" height="14" rx="4" fill="#585858"/>
+  <!-- Neck -->
+  <rect clip-path="url(#coinClip100)" x="69" y="98" width="22" height="12" rx="4" fill="#C8A880"/>
+  <!-- Head -->
+  <ellipse clip-path="url(#coinClip100)" cx="80" cy="78" rx="30" ry="33" fill="#C8A880"/>
+  <!-- Traditional helmet (투구) -->
+  <path clip-path="url(#coinClip100)" d="M 52 75 Q 55 48 80 44 Q 105 48 108 75 Q 100 70 80 68 Q 60 70 52 75 Z" fill="#484848"/>
+  <!-- Helmet brim -->
+  <rect clip-path="url(#coinClip100)" x="50" y="73" width="60" height="7" rx="3" fill="#383838"/>
+  <!-- Helmet crest/top -->
+  <path clip-path="url(#coinClip100)" d="M 75 44 Q 80 30 85 44" stroke="#484848" stroke-width="3" fill="none"/>
+  <circle clip-path="url(#coinClip100)" cx="80" cy="30" r="5" fill="#484848"/>
+  <!-- Helmet side flaps -->
+  <path clip-path="url(#coinClip100)" d="M 52 75 Q 44 82 46 92 Q 54 87 58 80 Z" fill="#484848"/>
+  <path clip-path="url(#coinClip100)" d="M 108 75 Q 116 82 114 92 Q 106 87 102 80 Z" fill="#484848"/>
+  <!-- Facial features -->
+  <ellipse cx="71" cy="78" rx="5" ry="3.5" fill="#6A5030"/>
+  <ellipse cx="89" cy="78" rx="5" ry="3.5" fill="#6A5030"/>
+  <path d="M 65 71 Q 71 68 77 71" stroke="#4A3018" stroke-width="1.5" fill="none"/>
+  <path d="M 83 71 Q 89 68 95 71" stroke="#4A3018" stroke-width="1.5" fill="none"/>
+  <ellipse cx="80" cy="88" rx="4" ry="5" fill="#B89060"/>
+  <path d="M 73 97 Q 80 102 87 97" stroke="#7A4828" stroke-width="2" fill="none"/>
+  <!-- Mustache -->
+  <path d="M 73 93 Q 78 96 80 94 Q 82 96 87 93" stroke="#4A3018" stroke-width="2" fill="none"/>
+
+  <!-- 백원 / 백 text on sides -->
+  <text x="26" y="84" text-anchor="middle" font-size="13" fill="#404040" font-family="'Malgun Gothic', serif" font-weight="bold">백</text>
+  <text x="134" y="84" text-anchor="middle" font-size="13" fill="#404040" font-family="'Malgun Gothic', serif" font-weight="bold">원</text>
+
+  <!-- Bottom text -->
+  <text x="80" y="143" text-anchor="middle" font-size="14" fill="#404040" font-family="'Malgun Gothic', serif" font-weight="bold">백원</text>
+
+  <!-- Edge details -->
+  <circle cx="80" cy="80" r="74" fill="none" stroke="#909090" stroke-width="1.5"/>
+  <circle cx="80" cy="80" r="78" fill="none" stroke="#646464" stroke-width="2"/>
+</svg>

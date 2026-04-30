@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <defs>
+    <clipPath id="coinClip500"><circle cx="80" cy="80" r="76"/></clipPath>
+    <radialGradient id="silverBg500" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#E0E0E0"/>
+      <stop offset="60%" stop-color="#B8B8B8"/>
+      <stop offset="100%" stop-color="#888888"/>
+    </radialGradient>
+    <radialGradient id="innerSilver500" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#D8D8D8"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Outer ring (raised border) -->
+  <circle cx="80" cy="80" r="78" fill="#787878"/>
+  <!-- Main coin surface -->
+  <circle cx="80" cy="80" r="74" fill="url(#silverBg500)"/>
+  <!-- Inner circle -->
+  <circle cx="80" cy="80" r="68" fill="url(#innerSilver500)"/>
+
+  <!-- Diagonal stripe pattern (like in the image) -->
+  <g clip-path="url(#coinClip500)" opacity="0.25">
+    <line x1="0" y1="40" x2="120" y2="160" stroke="white" stroke-width="10"/>
+    <line x1="20" y1="0" x2="160" y2="140" stroke="white" stroke-width="10"/>
+    <line x1="-20" y1="80" x2="100" y2="200" stroke="white" stroke-width="10"/>
+    <line x1="40" y1="0" x2="160" y2="120" stroke="white" stroke-width="6"/>
+    <line x1="-40" y1="60" x2="80" y2="180" stroke="white" stroke-width="6"/>
+  </g>
+
+  <!-- Crane body -->
+  <!-- Wings (main) -->
+  <path clip-path="url(#coinClip500)" d="M 30 72 Q 50 55 80 65 Q 110 55 130 72 Q 110 75 80 70 Q 50 75 30 72 Z" fill="#606060"/>
+  <!-- Wing left detail -->
+  <path clip-path="url(#coinClip500)" d="M 30 72 Q 45 68 65 70 Q 50 80 35 85 Z" fill="#505050"/>
+  <!-- Wing right detail -->
+  <path clip-path="url(#coinClip500)" d="M 130 72 Q 115 68 95 70 Q 110 80 125 85 Z" fill="#505050"/>
+  <!-- Wing feathers left -->
+  <path clip-path="url(#coinClip500)" d="M 32 74 Q 40 82 48 88" stroke="#484848" stroke-width="1.5" fill="none"/>
+  <path clip-path="url(#coinClip500)" d="M 38 72 Q 46 82 52 90" stroke="#484848" stroke-width="1.5" fill="none"/>
+  <path clip-path="url(#coinClip500)" d="M 45 70 Q 52 80 57 90" stroke="#484848" stroke-width="1.5" fill="none"/>
+  <!-- Wing feathers right -->
+  <path clip-path="url(#coinClip500)" d="M 128 74 Q 120 82 112 88" stroke="#484848" stroke-width="1.5" fill="none"/>
+  <path clip-path="url(#coinClip500)" d="M 122 72 Q 114 82 108 90" stroke="#484848" stroke-width="1.5" fill="none"/>
+  <path clip-path="url(#coinClip500)" d="M 115 70 Q 108 80 103 90" stroke="#484848" stroke-width="1.5" fill="none"/>
+  <!-- Body -->
+  <ellipse clip-path="url(#coinClip500)" cx="80" cy="78" rx="20" ry="14" fill="#686868"/>
+  <!-- Neck -->
+  <path clip-path="url(#coinClip500)" d="M 80 65 Q 85 52 88 42 Q 86 38 82 40 Q 80 50 75 58 Q 78 63 80 65 Z" fill="#686868"/>
+  <!-- Head -->
+  <ellipse clip-path="url(#coinClip500)" cx="84" cy="38" rx="9" ry="8" fill="#686868"/>
+  <!-- Red crown spot -->
+  <ellipse clip-path="url(#coinClip500)" cx="84" cy="31" rx="5" ry="4" fill="#888888"/>
+  <!-- Eye -->
+  <circle clip-path="url(#coinClip500)" cx="87" cy="37" r="2" fill="#404040"/>
+  <!-- Beak -->
+  <path clip-path="url(#coinClip500)" d="M 92 38 L 103 36 L 92 40 Z" fill="#686868"/>
+  <!-- Tail feathers -->
+  <path clip-path="url(#coinClip500)" d="M 65 82 Q 55 95 48 105" stroke="#505050" stroke-width="2.5" fill="none"/>
+  <path clip-path="url(#coinClip500)" d="M 68 86 Q 60 100 55 112" stroke="#505050" stroke-width="2" fill="none"/>
+  <path clip-path="url(#coinClip500)" d="M 72 88 Q 67 103 65 115" stroke="#505050" stroke-width="2" fill="none"/>
+  <!-- Legs -->
+  <line clip-path="url(#coinClip500)" x1="76" y1="90" x2="72" y2="110" stroke="#606060" stroke-width="2"/>
+  <line clip-path="url(#coinClip500)" x1="84" y1="90" x2="88" y2="110" stroke="#606060" stroke-width="2"/>
+  <!-- Feet -->
+  <path clip-path="url(#coinClip500)" d="M 72 110 L 65 115 M 72 110 L 70 116 M 72 110 L 76 115" stroke="#606060" stroke-width="1.5" fill="none"/>
+  <path clip-path="url(#coinClip500)" d="M 88 110 L 95 115 M 88 110 L 90 116 M 88 110 L 84 115" stroke="#606060" stroke-width="1.5" fill="none"/>
+
+  <!-- 오백원 text -->
+  <text x="80" y="143" text-anchor="middle" font-size="16" fill="#404040" font-family="'Malgun Gothic', serif" font-weight="bold">오백원</text>
+
+  <!-- Coin edge details -->
+  <circle cx="80" cy="80" r="74" fill="none" stroke="#909090" stroke-width="1.5"/>
+  <circle cx="80" cy="80" r="78" fill="none" stroke="#686868" stroke-width="2"/>
+</svg>

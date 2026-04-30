@@ -1,0 +1,562 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #000;
+  font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ── 화면 공통 ── */
+.screen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.screen.active { display: flex; }
+
+/* ── 시작 화면 ── */
+#screen-start {
+  background: linear-gradient(135deg, #1a2a1a 0%, #0a1a3a 50%, #2a1a0a 100%);
+  color: #fff;
+  gap: 24px;
+}
+
+.title-wrap {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.title-main {
+  font-size: 88px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  letter-spacing: -2px;
+  line-height: 1;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+
+.title-sub {
+  font-size: 20px;
+  color: #aaa;
+  margin-top: 8px;
+  letter-spacing: 4px;
+}
+
+.money-rain-preview {
+  font-size: 48px;
+  animation: fall 1.5s infinite ease-in;
+  letter-spacing: 8px;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10px); opacity: 0.5; }
+  100% { transform: translateY(10px); opacity: 1; }
+}
+
+.how-to {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 20px 32px;
+  text-align: center;
+  max-width: 480px;
+}
+
+.how-to h3 {
+  font-size: 16px;
+  color: #FFD700;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.how-to-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+  font-size: 15px;
+  color: #ddd;
+}
+
+.how-to-row .icon { font-size: 28px; }
+.how-to-row .arrow { color: #FFD700; font-size: 20px; }
+
+.btn-start {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #1a1a00;
+  font-size: 22px;
+  font-weight: 900;
+  border: none;
+  border-radius: 50px;
+  padding: 18px 64px;
+  cursor: pointer;
+  letter-spacing: 3px;
+  box-shadow: 0 8px 32px rgba(255,165,0,0.5);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btn-start:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 12px 40px rgba(255,165,0,0.7);
+}
+
+.btn-start:active { transform: scale(0.97); }
+
+/* ── 카운트다운 화면 ── */
+#screen-countdown {
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+}
+
+#countdown-number {
+  font-size: 180px;
+  font-weight: 900;
+  color: #FFD700;
+  text-shadow: 0 0 60px rgba(255,215,0,0.8);
+  animation: countPop 0.9s ease-out;
+}
+
+@keyframes countPop {
+  0% { transform: scale(1.8); opacity: 0; }
+  60% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+#countdown-text {
+  font-size: 28px;
+  color: #ccc;
+  margin-top: 16px;
+  letter-spacing: 6px;
+}
+
+/* ── 게임 화면 ── */
+#screen-game {
+  position: fixed;
+  inset: 0;
+  display: none;
+}
+#screen-game.active { display: block; }
+
+#webcam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  display: none;
+}
+
+#game-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── HUD (좌상단) ── */
+#hud {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  pointer-events: none;
+}
+
+#timer-box {
+  background: rgba(0,0,0,0.7);
+  border: 2px solid #FFD700;
+  border-radius: 12px;
+  padding: 8px 24px;
+  text-align: center;
+  min-width: 100px;
+}
+
+#timer-label {
+  font-size: 11px;
+  color: #aaa;
+  letter-spacing: 2px;
+}
+
+#timer-value {
+  font-size: 42px;
+  font-weight: 900;
+  color: #FFD700;
+  line-height: 1;
+}
+
+#timer-value.urgent {
+  color: #FF4444;
+  animation: blink 0.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── 마을통장 패널 (우측) ── */
+#bank-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 270px;
+  background: rgba(0,0,0,0.78);
+  border-left: 2px solid rgba(255,215,0,0.25);
+  padding: 0 0 16px;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── NH농협 통장 카드 ── */
+.bb-card {
+  background: #ece8de;
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.7);
+  border-bottom: 2px solid #555;
+}
+
+/* 통장 커버 영역 */
+.bb-nh-cover {
+  background: #e8e4d8;
+  padding: 10px 14px 8px;
+  border-bottom: 2px solid #aaa;
+}
+
+/* 상단 세 줄 선 (농협 통장 커버 특징) */
+.bb-nh-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+.bb-nh-lines div {
+  height: 2px;
+  background: #333;
+  border-radius: 1px;
+}
+.bb-nh-lines div:first-child { width: 30px; }
+.bb-nh-lines div:nth-child(2) { width: 30px; }
+.bb-nh-lines div:last-child  { width: 30px; }
+
+.bb-nh-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: #111;
+  text-align: center;
+  letter-spacing: 8px;
+  padding: 4px 0 8px;
+  font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+}
+
+.bb-nh-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bb-nh-brand {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bb-nh-icon {
+  font-size: 16px;
+  color: #005bac;
+  font-weight: 900;
+}
+
+.bb-nh-name {
+  font-size: 13px;
+  font-weight: bold;
+  color: #005bac;
+  letter-spacing: 1px;
+}
+
+/* 빨간 검인 도장 */
+.bb-nh-stamp {
+  width: 34px;
+  height: 34px;
+  border: 2px solid #c00;
+  border-radius: 50%;
+  color: #c00;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+  opacity: 0.75;
+}
+
+/* 잔액 표시 영역 (속지 느낌) */
+.bb-card-body {
+  padding: 8px 14px 6px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px, transparent 30px,
+      #b0b0b0 30px, #b0b0b0 31px
+    ),
+    #f7f4ec;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.bb-acct-label {
+  font-size: 11px;
+  color: #555;
+  letter-spacing: 4px;
+  margin-bottom: 1px;
+}
+
+/* 총액 — 26px의 2배 */
+#bank-total {
+  font-size: 46px;
+  font-weight: 900;
+  color: #0a0a50;
+  text-align: right;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  font-family: 'Courier New', monospace;
+  transition: transform 0.15s, color 0.1s;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+}
+
+#bank-total.pop {
+  transform: scale(1.08);
+  color: #c00020;
+}
+
+.bb-card-footer {
+  background: #dbd6ca;
+  border-top: 1px solid #bbb;
+  padding: 4px 14px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #666;
+}
+
+/* ── 미션 상황 텍스트 (통장 패널 내부 오버레이) ── */
+.mission-box {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  top: 52%;           /* 통장 카드 아래부터 패널 끝까지 */
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  font-size: 30px;
+  font-weight: 700;
+  font-family: 'Gaegu', 'Jua', 'Malgun Gothic', sans-serif;
+  color: #FFD700;
+  text-align: center;
+  line-height: 1.25;
+  word-break: keep-all;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+  pointer-events: none;
+  z-index: 20;
+  transition: color 0.4s ease;
+}
+
+.mission-box.high {
+  color: #FF7030;
+  animation: missionPulse 0.9s infinite;
+}
+
+@keyframes missionPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.04); }
+}
+
+.bank-divider {
+  height: 1px;
+  background: rgba(255,215,0,0.2);
+  margin: 6px 16px;
+}
+
+.bank-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 16px;
+  font-size: 13px;
+  color: #ccc;
+  transition: color 0.2s;
+}
+
+.bank-row.just-caught { color: #FFD700; font-weight: bold; }
+.bank-row .denom { font-weight: bold; }
+.bank-row .count { color: #888; font-size: 12px; }
+.bank-row .amount { color: #FFD700; }
+
+/* ── 손 제스처 힌트 ── */
+#gesture-hint {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.6);
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #ccc;
+  pointer-events: none;
+  letter-spacing: 1px;
+}
+
+/* ── 게임오버 화면 ── */
+#screen-gameover {
+  background: linear-gradient(135deg, #0a1a0a 0%, #0a0a1a 50%, #1a0a0a 100%);
+  color: #fff;
+  gap: 20px;
+}
+
+.gameover-title {
+  font-size: 52px;
+  font-weight: 900;
+  color: #FFD700;
+  letter-spacing: 4px;
+  text-align: center;
+}
+
+.gameover-score-box {
+  background: rgba(255,215,0,0.1);
+  border: 2px solid #FFD700;
+  border-radius: 16px;
+  padding: 20px 40px;
+  text-align: center;
+}
+
+.gameover-score-label {
+  font-size: 14px;
+  color: #aaa;
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+
+.gameover-score-value {
+  font-size: 48px;
+  font-weight: 900;
+  color: #FFD700;
+}
+
+.gameover-score-value.new-record::after {
+  content: ' 🏆';
+  font-size: 36px;
+}
+
+.ranking-box {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 16px 24px;
+  width: 340px;
+}
+
+.ranking-box h3 {
+  font-size: 13px;
+  color: #FFD700;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.ranking-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.ranking-row:last-child { border-bottom: none; }
+.ranking-row .rank { color: #888; width: 30px; }
+.ranking-row.rank-1 .rank { color: #FFD700; font-weight: bold; font-size: 18px; }
+.ranking-row.rank-2 .rank { color: #C0C0C0; font-weight: bold; }
+.ranking-row.rank-3 .rank { color: #CD7F32; font-weight: bold; }
+.ranking-row .score { color: #FFD700; font-weight: bold; }
+.ranking-row .date { color: #555; font-size: 12px; }
+.ranking-row.current { background: rgba(255,215,0,0.1); border-radius: 6px; }
+
+.btn-retry {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #1a1a00;
+  font-size: 20px;
+  font-weight: 900;
+  border: none;
+  border-radius: 50px;
+  padding: 16px 56px;
+  cursor: pointer;
+  letter-spacing: 3px;
+  box-shadow: 0 8px 32px rgba(255,165,0,0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+  margin-top: 4px;
+}
+
+.btn-retry:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 12px 40px rgba(255,165,0,0.6);
+}
+
+/* ── 캐치 이펙트 (canvas 위 DOM) ── */
+.catch-effect {
+  position: absolute;
+  font-size: 28px;
+  font-weight: 900;
+  color: #FFD700;
+  pointer-events: none;
+  animation: floatUp 0.9s ease-out forwards;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  white-space: nowrap;
+}
+
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  70% { opacity: 1; transform: translateY(-60px) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-90px) scale(0.8); }
+}
+
+/* ── 난이도 표시 ── */
+#difficulty-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: #aaa;
+  letter-spacing: 1px;
+  pointer-events: none;
+  transition: color 0.5s;
+}
+
+#difficulty-badge.medium { color: #FFA500; }
+#difficulty-badge.hard { color: #FF4444; }
