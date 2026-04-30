@@ -1,0 +1,18 @@
+{
+  "name": "돈벼락 💰",
+  "short_name": "돈벼락",
+  "description": "60초 돈잡기 게임 - 날아다니는 지폐와 동전을 손가락으로 잡아라!",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#000000",
+  "theme_color": "#FFD700",
+  "icons": [
+    {
+      "src": "../assets/images/50000.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

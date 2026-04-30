@@ -139,7 +139,33 @@
     showScreen('gameover');
   }
 
+  // ── 전체화면 + 화면 방향 고정 ───────────────────────────────
+  function requestFullscreenLandscape() {
+    const el = document.documentElement;
+    const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
+    if (fn) fn.call(el).catch(() => {});
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('landscape').catch(() => {});
+    }
+  }
+
+  // ── iOS 홈 화면 추가 안내 ────────────────────────────────────
+  function showInstallHint() {
+    const hint = document.getElementById('install-hint');
+    if (!hint) return;
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isAndroid = /android/i.test(navigator.userAgent);
+    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: fullscreen)').matches;
+    if (isStandalone) { hint.style.display = 'none'; return; }
+    if (isIOS) {
+      hint.innerHTML = '📲 Safari 공유 버튼 → <strong>홈 화면에 추가</strong>하면 앱처럼 전체화면으로!';
+    } else if (isAndroid) {
+      hint.innerHTML = '📲 브라우저 메뉴 → <strong>홈 화면에 추가</strong>하면 앱처럼 전체화면으로!';
+    }
+  }
+
   function startGame() {
+    requestFullscreenLandscape();
     Sound.init();
     Sound.resume();
 
@@ -157,6 +183,8 @@
 
   btnStart.addEventListener('click', startGame);
   btnRetry.addEventListener('click', startGame);
+
+  showInstallHint();
 
   showScreen('start');
 })();

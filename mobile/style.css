@@ -105,6 +105,20 @@ body {
 }
 .btn-start:active { transform: scale(0.96); }
 
+/* ── 홈 화면 추가 안내 ── */
+.install-hint {
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  max-width: 340px;
+  line-height: 1.6;
+  padding: 6px 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+}
+.install-hint strong { color: #FFD700; }
+
 /* ── 카운트다운 화면 ── */
 #screen-countdown {
   background: rgba(0,0,0,0.9);
