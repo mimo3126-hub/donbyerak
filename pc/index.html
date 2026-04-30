@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>돈벼락 💰 — PC버전</title>
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- MediaPipe CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- ── 시작 화면 ── -->
+  <div id="screen-start" class="screen">
+    <div class="title-wrap">
+      <div class="title-main">돈벼락</div>
+      <div class="title-sub">MONEY STORM — PC버전</div>
+    </div>
+
+    <div class="money-rain-preview">💴 💵 💶 💷</div>
+
+    <div class="how-to">
+      <div class="how-to-row" style="justify-content:center; font-size:17px; color:#fff; line-height:1.7; text-align:center;">
+        <span>날아다니는 지폐와 동전을<br>손가락으로 <strong style="color:#FFD700;">콕콕콕</strong> 신나게 찔러주세요!</span>
+      </div>
+      <div class="how-to-row" style="margin-top:14px; font-size:13px; color:#888; justify-content:center;">
+        <span>⏱ 60초 안에 최대한 많이!</span>
+      </div>
+    </div>
+
+    <button id="btn-start" class="btn-start">게임 시작 🎮</button>
+    <p style="color:#555; font-size:13px; margin-top:8px;">웹캠 + Chrome 브라우저 필요</p>
+    <a href="../" style="color:#555; font-size:12px; margin-top:4px; text-decoration:none;">← 버전 선택으로 돌아가기</a>
+  </div>
+
+  <!-- ── 카운트다운 화면 ── -->
+  <div id="screen-countdown" class="screen">
+    <div id="countdown-number">3</div>
+    <div id="countdown-text">준비하세요!</div>
+  </div>
+
+  <!-- ── 게임 화면 ── -->
+  <div id="screen-game" class="screen">
+    <video id="webcam" autoplay playsinline muted></video>
+    <canvas id="game-canvas"></canvas>
+
+    <div id="hud">
+      <div id="timer-box">
+        <div id="timer-label">TIME</div>
+        <div id="timer-value">60</div>
+      </div>
+    </div>
+
+    <div id="difficulty-badge">⚡ 보통</div>
+
+    <div id="bank-panel">
+      <div class="bb-card">
+        <div class="bb-nh-cover">
+          <div class="bb-nh-lines"><div></div><div></div><div></div></div>
+          <div class="bb-nh-title">마을통장</div>
+          <div class="bb-nh-bottom">
+            <div class="bb-nh-brand">
+              <span class="bb-nh-icon">⊛</span>
+              <span class="bb-nh-name">마을은행</span>
+            </div>
+            <div class="bb-nh-stamp">검인</div>
+          </div>
+        </div>
+        <div class="bb-card-body">
+          <div class="bb-acct-label">잔 &nbsp;액</div>
+          <div id="bank-total" class="bb-card-amount">₩0</div>
+        </div>
+        <div class="bb-card-footer">
+          <span>실시간 잔액</span><span>60초 승부</span>
+        </div>
+      </div>
+
+      <div class="bank-divider"></div>
+      <div class="bank-row" id="bank-50000"><span class="denom" style="color:#EDD890">오만원</span><span class="count" id="count-50000">× 0</span><span class="amount" id="amt-50000"></span></div>
+      <div class="bank-row" id="bank-10000"><span class="denom" style="color:#96C8A0">만원</span><span class="count" id="count-10000">× 0</span><span class="amount" id="amt-10000"></span></div>
+      <div class="bank-row" id="bank-5000"><span class="denom" style="color:#D4B898">오천원</span><span class="count" id="count-5000">× 0</span><span class="amount" id="amt-5000"></span></div>
+      <div class="bank-row" id="bank-1000"><span class="denom" style="color:#90B8D8">천원</span><span class="count" id="count-1000">× 0</span><span class="amount" id="amt-1000"></span></div>
+      <div class="bank-divider"></div>
+      <div class="bank-row" id="bank-500"><span class="denom" style="color:#C8C8A0">오백원</span><span class="count" id="count-500">× 0</span><span class="amount" id="amt-500"></span></div>
+      <div class="bank-row" id="bank-100"><span class="denom" style="color:#B0B0B0">백원</span><span class="count" id="count-100">× 0</span><span class="amount" id="amt-100"></span></div>
+
+      <div class="bank-divider" style="margin-top:auto"></div>
+      <div id="gesture-hint" style="position:static; background:none; padding:6px 16px; font-size:12px; transform:none; left:auto;">
+        ☝️ 손가락으로 콕콕!
+      </div>
+      <div id="mission-text" class="mission-box">💰 돈을 잡아라!</div>
+    </div>
+  </div>
+
+  <!-- ── 게임오버 화면 ── -->
+  <div id="screen-gameover" class="screen">
+    <div class="gameover-title">⏰ 시간 종료!</div>
+    <div class="gameover-score-box">
+      <div class="gameover-score-label">마을통장 최종 잔액</div>
+      <div id="gameover-score-value" class="gameover-score-value">₩0</div>
+    </div>
+    <div class="ranking-box">
+      <h3>🏆 역대 기록</h3>
+      <div id="ranking-list"></div>
+    </div>
+    <button id="btn-retry" class="btn-retry">다시 하기 🔄</button>
+    <a href="../" style="color:#555; font-size:12px; margin-top:8px; text-decoration:none;">← 버전 선택으로 돌아가기</a>
+  </div>
+
+  <!-- JS (순서 중요) -->
+  <script>window.BGM_BASE = '../'; window.ASSETS_BASE = '../';</script>
+  <script src="../js/sound.js"></script>
+  <script src="../js/score.js"></script>
+  <script src="../js/gesture.js"></script>
+  <script src="../js/money.js"></script>
+  <script src="../js/hands.js"></script>
+  <script src="../js/game.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

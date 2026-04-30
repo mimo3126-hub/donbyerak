@@ -137,12 +137,13 @@ const Game = (() => {
     canvas = canvasEl;
     ctx = canvas.getContext('2d');
     videoEl = videoElement;
+    const ASSETS = window.ASSETS_BASE || '';
     manager = new Money.MoneyManager();
-    Money.preload('assets/images/');
+    Money.preload(ASSETS + 'assets/images/');
 
     // 비트 연출용 5만원 이미지 사전 로드
     beatBillImg = new Image();
-    beatBillImg.src = 'assets/images/50000.png';
+    beatBillImg.src = ASSETS + 'assets/images/50000.png';
 
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     resize();

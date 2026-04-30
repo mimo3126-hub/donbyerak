@@ -4,157 +4,196 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>돈벼락 💰</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- 귀엽고 자연스러운 대화체 폰트 -->
   <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  <!-- MediaPipe CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0a1a0a 0%, #0a0a2a 50%, #1a0a0a 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Jua', 'Malgun Gothic', sans-serif;
+      gap: 32px;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    /* 배경 반짝이 파티클 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,215,0,0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,100,0,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .title-wrap { text-align: center; }
+
+    .title-main {
+      font-size: clamp(64px, 12vw, 100px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -2px;
+      line-height: 1;
+      animation: shimmer 2.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { filter: brightness(1); }
+      50%       { filter: brightness(1.35); }
+    }
+
+    .title-sub {
+      font-size: clamp(13px, 2.5vw, 18px);
+      color: #888;
+      margin-top: 6px;
+      letter-spacing: 5px;
+    }
+
+    .rain { font-size: clamp(28px, 5vw, 44px); letter-spacing: 8px; animation: fall 1.6s infinite ease-in-out alternate; }
+    @keyframes fall {
+      0%   { transform: translateY(-6px); opacity: 0.6; }
+      100% { transform: translateY(6px);  opacity: 1; }
+    }
+
+    .desc {
+      font-size: clamp(13px, 2.5vw, 16px);
+      color: #aaa;
+      text-align: center;
+      line-height: 1.8;
+      font-family: 'Gaegu', sans-serif;
+    }
+    .desc strong { color: #FFD700; }
+
+    /* ── 버전 선택 카드 ── */
+    .cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,215,0,0.25);
+      border-radius: 24px;
+      padding: 32px 36px;
+      width: clamp(200px, 36vw, 280px);
+      text-decoration: none;
+      color: #fff;
+      transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.03);
+      border-color: #FFD700;
+      box-shadow: 0 12px 40px rgba(255,215,0,0.25);
+    }
+    .card:active { transform: scale(0.97); }
+
+    .card-icon { font-size: clamp(44px, 8vw, 64px); }
+
+    .card-title {
+      font-size: clamp(18px, 3.5vw, 24px);
+      font-weight: 900;
+      color: #FFD700;
+      letter-spacing: 1px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tag {
+      font-size: clamp(10px, 1.8vw, 12px);
+      color: #aaa;
+      background: rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-family: 'Gaegu', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .card-btn {
+      margin-top: 6px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #1a1a00;
+      font-size: clamp(13px, 2.5vw, 16px);
+      font-weight: 900;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 28px;
+      font-family: 'Jua', sans-serif;
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+
+    .footer {
+      font-size: 11px;
+      color: #444;
+      text-align: center;
+      line-height: 1.7;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ── 시작 화면 ── -->
-  <div id="screen-start" class="screen">
-    <div class="title-wrap">
-      <div class="title-main">돈벼락</div>
-      <div class="title-sub">MONEY STORM</div>
-    </div>
-
-    <div class="money-rain-preview">💴 💵 💶 💷</div>
-
-    <div class="how-to">
-      <div class="how-to-row" style="justify-content:center; font-size:17px; color:#fff; line-height:1.7; text-align:center;">
-        <span>날아다니는 지폐와 동전을<br>손가락으로 <strong style="color:#FFD700;">콕콕콕</strong> 신나게 찔러주세요!</span>
-      </div>
-      <div class="how-to-row" style="margin-top:14px; font-size:13px; color:#888; justify-content:center;">
-        <span>⏱ 60초 안에 최대한 많이!</span>
-      </div>
-    </div>
-
-    <button id="btn-start" class="btn-start">게임 시작 🎮</button>
-
-    <p style="color:#555; font-size:13px; margin-top:8px;">웹캠 권한이 필요합니다</p>
+  <div class="title-wrap">
+    <div class="title-main">돈벼락</div>
+    <div class="title-sub">MONEY STORM</div>
   </div>
 
-  <!-- ── 카운트다운 화면 ── -->
-  <div id="screen-countdown" class="screen">
-    <div id="countdown-number">3</div>
-    <div id="countdown-text">준비하세요!</div>
+  <div class="rain">💴 💵 💶 💷</div>
+
+  <div class="desc">
+    날아다니는 지폐와 동전을<br>
+    <strong>손가락으로 콕콕콕</strong> 잡아라! ⏱ 60초 승부
   </div>
 
-  <!-- ── 게임 화면 ── -->
-  <div id="screen-game" class="screen">
-    <video id="webcam" autoplay playsinline muted></video>
-    <canvas id="game-canvas"></canvas>
+  <div class="cards">
 
-    <!-- 타이머 HUD -->
-    <div id="hud">
-      <div id="timer-box">
-        <div id="timer-label">TIME</div>
-        <div id="timer-value">60</div>
+    <a class="card" href="pc/">
+      <div class="card-icon">💻</div>
+      <div class="card-title">PC로 하기</div>
+      <div class="card-tags">
+        <span class="tag">🎥 웹캠으로 손 인식</span>
+        <span class="tag">☝️ 손가락 움직임으로 조작</span>
+        <span class="tag">🌐 Chrome 브라우저 필수</span>
       </div>
-    </div>
+      <div class="card-btn">시작하기 →</div>
+    </a>
 
-    <!-- 난이도 뱃지 -->
-    <div id="difficulty-badge">⚡ 보통</div>
+    <a class="card" href="mobile/">
+      <div class="card-icon">📱</div>
+      <div class="card-title">핸드폰으로 하기</div>
+      <div class="card-tags">
+        <span class="tag">👆 화면을 직접 터치</span>
+        <span class="tag">📐 가로 모드 권장</span>
+        <span class="tag">✅ 모든 브라우저 지원</span>
+      </div>
+      <div class="card-btn">시작하기 →</div>
+    </a>
 
-    <!-- 마을통장 패널 -->
-    <div id="bank-panel">
-
-      <!-- NH농협 통장 카드 디자인 -->
-      <div class="bb-card">
-        <div class="bb-nh-cover">
-          <div class="bb-nh-lines">
-            <div></div><div></div><div></div>
-          </div>
-          <div class="bb-nh-title">마을통장</div>
-          <div class="bb-nh-bottom">
-            <div class="bb-nh-brand">
-              <span class="bb-nh-icon">⊛</span>
-              <span class="bb-nh-name">마을은행</span>
-            </div>
-            <div class="bb-nh-stamp">검인</div>
-          </div>
-        </div>
-        <div class="bb-card-body">
-          <div class="bb-acct-label">잔 &nbsp;액</div>
-          <div id="bank-total" class="bb-card-amount">₩0</div>
-        </div>
-        <div class="bb-card-footer">
-          <span>실시간 잔액</span><span>60초 승부</span>
-        </div>
-      </div>
-
-      <div class="bank-divider"></div>
-
-      <div class="bank-row" id="bank-50000">
-        <span class="denom" style="color:#EDD890">오만원</span>
-        <span class="count" id="count-50000">× 0</span>
-        <span class="amount" id="amt-50000"></span>
-      </div>
-      <div class="bank-row" id="bank-10000">
-        <span class="denom" style="color:#96C8A0">만원</span>
-        <span class="count" id="count-10000">× 0</span>
-        <span class="amount" id="amt-10000"></span>
-      </div>
-      <div class="bank-row" id="bank-5000">
-        <span class="denom" style="color:#D4B898">오천원</span>
-        <span class="count" id="count-5000">× 0</span>
-        <span class="amount" id="amt-5000"></span>
-      </div>
-      <div class="bank-row" id="bank-1000">
-        <span class="denom" style="color:#90B8D8">천원</span>
-        <span class="count" id="count-1000">× 0</span>
-        <span class="amount" id="amt-1000"></span>
-      </div>
-      <div class="bank-divider"></div>
-      <div class="bank-row" id="bank-500">
-        <span class="denom" style="color:#C8C8A0">오백원</span>
-        <span class="count" id="count-500">× 0</span>
-        <span class="amount" id="amt-500"></span>
-      </div>
-      <div class="bank-row" id="bank-100">
-        <span class="denom" style="color:#B0B0B0">백원</span>
-        <span class="count" id="count-100">× 0</span>
-        <span class="amount" id="amt-100"></span>
-      </div>
-
-      <div class="bank-divider" style="margin-top:auto"></div>
-      <div id="gesture-hint" style="position:static; background:none; padding:6px 16px; font-size:12px; transform:none; left:auto;">
-        ☝️ 손가락으로 콕콕!
-      </div>
-
-      <!-- 미션 텍스트 — 패널 내부 오버레이 -->
-      <div id="mission-text" class="mission-box">💰 돈을 잡아라!</div>
-    </div>
   </div>
 
-  <!-- ── 게임오버 화면 ── -->
-  <div id="screen-gameover" class="screen">
-    <div class="gameover-title">⏰ 시간 종료!</div>
-
-    <div class="gameover-score-box">
-      <div class="gameover-score-label">마을통장 최종 잔액</div>
-      <div id="gameover-score-value" class="gameover-score-value">₩0</div>
-    </div>
-
-    <div class="ranking-box">
-      <h3>🏆 역대 기록</h3>
-      <div id="ranking-list"></div>
-    </div>
-
-    <button id="btn-retry" class="btn-retry">다시 하기 🔄</button>
+  <div class="footer">
+    💡 핸드폰은 Safari/Chrome 공유 버튼 → <strong style="color:#666;">홈 화면에 추가</strong>하면 앱처럼 전체화면으로 즐길 수 있어요
   </div>
 
-  <!-- JS (순서 중요) -->
-  <script src="js/sound.js"></script>
-  <script src="js/score.js"></script>
-  <script src="js/gesture.js"></script>
-  <script src="js/money.js"></script>
-  <script src="js/hands.js"></script>
-  <script src="js/game.js"></script>
-  <script src="js/main.js"></script>
 </body>
 </html>
