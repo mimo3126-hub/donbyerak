@@ -2,7 +2,7 @@
 
 body {
   background: #000;
-  font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Gugi', 'Malgun Gothic', sans-serif;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
@@ -116,7 +116,7 @@ body {
   font-weight: 900;
   color: #FFD700;
   text-align: center;
-  font-family: 'Jua', sans-serif;
+  font-family: 'Gugi', sans-serif;
 }
 .name-sub {
   font-size: 12px;
@@ -126,7 +126,7 @@ body {
 }
 .name-input {
   font-size: 22px;
-  font-family: 'Gaegu', 'Jua', sans-serif;
+  font-family: 'Gaegu', 'Gugi', sans-serif;
   font-weight: 700;
   text-align: center;
   background: rgba(255,255,255,0.08);
@@ -148,7 +148,7 @@ body {
   background: rgba(255,255,255,0.1);
   color: #888;
   font-size: 14px;
-  font-family: 'Jua', sans-serif;
+  font-family: 'Gugi', sans-serif;
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 50px;
   padding: 12px 24px;
@@ -160,7 +160,7 @@ body {
   color: #1a1a00;
   font-size: 16px;
   font-weight: 900;
-  font-family: 'Jua', sans-serif;
+  font-family: 'Gugi', sans-serif;
   border: none;
   border-radius: 50px;
   padding: 12px 32px;
@@ -370,7 +370,7 @@ body {
   text-align: center;
   letter-spacing: 6px;
   padding: 2px 0 5px;
-  font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Gugi', 'Malgun Gothic', sans-serif;
 }
 
 .bb-nh-bottom {
@@ -465,7 +465,7 @@ body {
   padding: 5px 8px;
   font-size: 13px;
   font-weight: 700;
-  font-family: 'Gaegu', 'Jua', 'Malgun Gothic', sans-serif;
+  font-family: 'Gugi', 'Malgun Gothic', sans-serif;
   color: #FFD700;
   text-align: center;
   line-height: 1.35;
