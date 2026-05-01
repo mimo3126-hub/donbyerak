@@ -3,193 +3,1115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>돈벼락 💰</title>
+  <title>돈벼락 게임 💰 — 행동인식 콕콕 터치!</title>
   <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy:  #060e28;
+      --navy2: #0a1535;
+      --navy3: #0d1b4b;
+      --gold:  #f5b800;
+      --gold2: #FFD700;
+      --orange:#FFA500;
+      --text:  #e2e8f0;
+      --muted: #7a8ba8;
+    }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      height: 100svh;
-      background: linear-gradient(135deg, #0a1a0a 0%, #0a0a2a 50%, #1a0a0a 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      background: var(--navy);
       font-family: 'Jua', 'Malgun Gothic', sans-serif;
-      gap: clamp(10px, 2.5vh, 28px);
-      padding: clamp(12px, 3vw, 24px);
-      overflow: hidden;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    body::before {
-      content: '';
+    a { text-decoration: none; color: inherit; }
+
+    /* ── 네비게이션 ── */
+    nav {
       position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 30%, rgba(255,215,0,0.06) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(255,100,0,0.06) 0%, transparent 50%);
-      pointer-events: none;
-    }
-
-    /* ── 타이틀 ── */
-    .title-main {
-      font-size: clamp(36px, 9vw, 96px);
-      font-weight: 900;
-      background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -1px;
-      line-height: 1;
-      animation: shimmer 2.5s infinite;
-      text-align: center;
-    }
-    .title-sub {
-      font-size: clamp(10px, 2vw, 16px);
-      color: #777;
-      letter-spacing: 4px;
-      text-align: center;
-      margin-top: 4px;
-    }
-
-    @keyframes shimmer {
-      0%, 100% { filter: brightness(1); }
-      50%       { filter: brightness(1.35); }
-    }
-
-    .desc {
-      font-size: clamp(11px, 2.2vw, 15px);
-      color: #aaa;
-      text-align: center;
-      line-height: 1.7;
-      font-family: 'Gaegu', sans-serif;
-    }
-    .desc strong { color: #FFD700; }
-
-    /* ── 카드 컨테이너: 항상 가로 2열 ── */
-    .cards {
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      background: rgba(6, 14, 40, 0.96);
+      border-bottom: 1px solid rgba(245,184,0,0.18);
       display: flex;
-      gap: clamp(10px, 2.5vw, 20px);
-      flex-wrap: nowrap;        /* ← 절대 줄바꿈 안 함 */
-      width: 100%;
-      max-width: 580px;
+      align-items: center;
+      padding: 0 clamp(16px, 4vw, 48px);
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      gap: 24px;
     }
 
-    .card {
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--gold2);
+      white-space: nowrap;
+    }
+    .nav-logo .logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: clamp(16px, 2.5vw, 32px);
       flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: clamp(6px, 1.5vh, 12px);
-      background: rgba(255,255,255,0.05);
-      border: 2px solid rgba(255,215,0,0.25);
-      border-radius: 20px;
-      padding: clamp(14px, 3vh, 28px) clamp(10px, 2.5vw, 24px);
-      text-decoration: none;
-      color: #fff;
-      transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--muted);
     }
-    .card:hover {
-      transform: translateY(-4px) scale(1.02);
-      border-color: #FFD700;
-      box-shadow: 0 10px 32px rgba(255,215,0,0.22);
-    }
-    .card:active { transform: scale(0.97); }
+    .nav-links a:hover { color: var(--gold2); }
 
-    .card-icon { font-size: clamp(28px, 6vw, 56px); }
-
-    .card-title {
-      font-size: clamp(14px, 3.2vw, 22px);
-      font-weight: 900;
-      color: #FFD700;
-      text-align: center;
-    }
-
-    .card-tags {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      width: 100%;
-    }
-
-    .tag {
-      font-size: clamp(9px, 1.6vw, 12px);
-      color: #aaa;
-      background: rgba(255,255,255,0.07);
-      border-radius: 20px;
-      padding: 3px 10px;
-      font-family: 'Gaegu', sans-serif;
-      text-align: center;
-      width: 100%;
-    }
-
-    .card-btn {
-      margin-top: 4px;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      color: #1a1a00;
-      font-size: clamp(12px, 2.2vw, 15px);
+    .nav-cta {
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: #1a1000;
+      font-family: 'Jua', sans-serif;
+      font-size: 14px;
       font-weight: 900;
       border: none;
       border-radius: 50px;
-      padding: clamp(7px, 1.5vh, 11px) clamp(16px, 3vw, 26px);
-      font-family: 'Jua', sans-serif;
-      letter-spacing: 1px;
-      pointer-events: none;
+      padding: 10px 22px;
+      cursor: pointer;
       white-space: nowrap;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 16px rgba(245,184,0,0.35);
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,184,0,0.5); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px;
     }
 
-    .footer {
-      font-size: clamp(9px, 1.6vw, 11px);
-      color: #444;
+    /* ── 히어로 섹션 ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px clamp(16px, 5vw, 80px) 60px;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(13,27,75,0.9) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(245,184,0,0.07) 0%, transparent 60%),
+        linear-gradient(180deg, #060e28 0%, #08122e 50%, #060e28 100%);
+      position: relative;
+      overflow: hidden;
+      gap: clamp(20px, 4vw, 60px);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(245,184,0,0.06)'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .hero-content {
+      flex: 1;
+      max-width: 560px;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(245,184,0,0.25), rgba(255,100,0,0.2));
+      border: 1px solid rgba(245,184,0,0.5);
+      border-radius: 50px;
+      padding: 7px 20px;
+      font-size: 14px;
+      font-family: 'Gaegu', sans-serif;
+      color: var(--gold2);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+    .hero-badge::before { content: '◆ '; font-size: 10px; }
+
+    .hero-title {
+      font-size: clamp(52px, 7vw, 92px);
+      font-weight: 900;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #fff 30%, var(--gold2) 60%, var(--orange) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .hero-desc {
+      font-size: clamp(14px, 1.6vw, 17px);
+      font-family: 'Gaegu', sans-serif;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+    .hero-desc strong { color: var(--gold2); }
+
+    .hero-highlight {
+      font-size: clamp(15px, 1.7vw, 18px);
+      font-family: 'Gaegu', sans-serif;
+      color: var(--gold2);
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: #1a1000;
+      font-family: 'Jua', sans-serif;
+      font-size: clamp(16px, 1.8vw, 20px);
+      font-weight: 900;
+      border: none;
+      border-radius: 50px;
+      padding: clamp(14px,1.8vh,18px) clamp(28px,3vw,40px);
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(245,184,0,0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(245,184,0,0.6); }
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: var(--text);
+      font-family: 'Jua', sans-serif;
+      font-size: clamp(16px, 1.8vw, 20px);
+      font-weight: 900;
+      border-radius: 50px;
+      padding: clamp(12px,1.6vh,16px) clamp(24px,2.5vw,36px);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--gold2); background: rgba(245,184,0,0.1); }
+
+    /* ── 히어로 비주얼 ── */
+    .hero-visual {
+      flex: 1;
+      max-width: 560px;
+      min-width: 280px;
+      height: clamp(300px, 50vw, 480px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .vis-glow {
+      position: absolute;
+      width: 85%;
+      height: 85%;
+      background: radial-gradient(circle, rgba(245,184,0,0.22) 0%, rgba(255,100,0,0.12) 40%, transparent 70%);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%,100% { opacity: 0.7; transform: translate(-50%,-50%) scale(1); }
+      50%      { opacity: 1;   transform: translate(-50%,-50%) scale(1.1); }
+    }
+
+    /* 동전 더미 */
+    .vis-coinpile {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .coin-row {
+      display: flex;
+      gap: 2px;
+    }
+
+    .vis-coin {
+      width: clamp(30px, 4.5vw, 54px);
+      height: clamp(30px, 4.5vw, 54px);
+      background: radial-gradient(circle at 35% 35%, #ffe066, #c8920a);
+      border-radius: 50%;
+      border: 2px solid #ffcc00;
+      box-shadow: 0 4px 12px rgba(255,165,0,0.5), inset 0 -2px 4px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(12px, 1.8vw, 20px);
+      color: #c8780a;
+      font-weight: 900;
+    }
+
+    .vis-coin.small {
+      width: clamp(22px, 3.5vw, 42px);
+      height: clamp(22px, 3.5vw, 42px);
+      font-size: clamp(9px, 1.4vw, 16px);
+    }
+
+    /* 마을통장 */
+    .vis-bankbook {
+      position: absolute;
+      bottom: clamp(70px, 12vw, 140px);
+      left: 50%;
+      transform: translateX(-55%) rotate(-8deg);
+      background: #f5f0e8;
+      border-radius: 8px;
+      padding: clamp(8px, 1.5vw, 16px) clamp(10px, 2vw, 22px);
+      box-shadow: 4px 8px 32px rgba(0,0,0,0.6);
+      min-width: clamp(90px, 14vw, 160px);
       text-align: center;
+      border-left: 8px solid #2d6a3a;
+    }
+
+    .bankbook-title {
+      font-size: clamp(13px, 2vw, 22px);
+      font-weight: 900;
+      color: #1a3a22;
+      letter-spacing: 3px;
+    }
+
+    .bankbook-sub {
+      font-size: clamp(8px, 1.2vw, 12px);
+      color: #5a7a5a;
+      margin-top: 4px;
+    }
+
+    .bankbook-lines {
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .bankbook-lines span {
+      display: block;
+      height: 1px;
+      background: #bbb;
+    }
+
+    /* 날아다니는 지폐들 */
+    .vis-bill {
+      position: absolute;
+      border-radius: 4px;
+      box-shadow: 2px 4px 12px rgba(0,0,0,0.5);
+      font-size: clamp(8px, 1.2vw, 13px);
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 1px;
+    }
+
+    .bill-50k {
+      width: clamp(70px, 10vw, 115px);
+      height: clamp(35px, 5vw, 57px);
+      background: linear-gradient(135deg, #e8d070, #c9ad30);
+      color: #7a6010;
+      top: 8%; left: 10%;
+      transform: rotate(-25deg);
+      animation: floatBill1 5s ease-in-out infinite;
+    }
+    .bill-10k {
+      width: clamp(60px, 9vw, 105px);
+      height: clamp(30px, 4.5vw, 52px);
+      background: linear-gradient(135deg, #70c880, #3a9850);
+      color: #1a5028;
+      top: 12%; right: 8%;
+      transform: rotate(20deg);
+      animation: floatBill2 6s ease-in-out infinite;
+    }
+    .bill-5k {
+      width: clamp(55px, 8vw, 98px);
+      height: clamp(27px, 4vw, 49px);
+      background: linear-gradient(135deg, #d4a870, #a07040);
+      color: #6a3a10;
+      top: 50%; right: 5%;
+      transform: rotate(-15deg);
+      animation: floatBill3 7s ease-in-out infinite;
+    }
+    .bill-1k {
+      width: clamp(50px, 7.5vw, 92px);
+      height: clamp(25px, 3.8vw, 46px);
+      background: linear-gradient(135deg, #80b0d8, #4a7aaa);
+      color: #1a3a5a;
+      top: 60%; left: 5%;
+      transform: rotate(30deg);
+      animation: floatBill4 4.5s ease-in-out infinite;
+    }
+
+    /* 손가락 커서 */
+    .vis-cursor {
+      position: absolute;
+      top: 18%;
+      right: 22%;
+      font-size: clamp(28px, 4vw, 52px);
+      filter: drop-shadow(0 4px 12px rgba(255,255,255,0.5));
+      animation: cursorPoke 2s ease-in-out infinite;
+      z-index: 5;
+    }
+
+    .vis-cursor2 {
+      position: absolute;
+      top: 35%;
+      left: 15%;
+      font-size: clamp(22px, 3.2vw, 42px);
+      filter: drop-shadow(0 4px 12px rgba(255,255,255,0.4));
+      animation: cursorPoke 2.8s ease-in-out infinite 0.8s;
+      z-index: 5;
+    }
+
+    /* 클릭 리플 이펙트 */
+    .vis-ripple {
+      position: absolute;
+      border: 2px solid rgba(255,215,0,0.7);
+      border-radius: 50%;
+      animation: ripple 2s ease-out infinite;
+    }
+    .vis-ripple1 { width: 60px; height: 60px; top: 14%; right: 18%; animation-delay: 0s; }
+    .vis-ripple2 { width: 60px; height: 60px; top: 14%; right: 18%; animation-delay: 0.5s; }
+
+    @keyframes floatBill1 {
+      0%,100% { transform: rotate(-25deg) translate(0,0); }
+      50%      { transform: rotate(-20deg) translate(8px,-12px); }
+    }
+    @keyframes floatBill2 {
+      0%,100% { transform: rotate(20deg) translate(0,0); }
+      50%      { transform: rotate(25deg) translate(-6px,-10px); }
+    }
+    @keyframes floatBill3 {
+      0%,100% { transform: rotate(-15deg) translate(0,0); }
+      50%      { transform: rotate(-10deg) translate(-8px,-14px); }
+    }
+    @keyframes floatBill4 {
+      0%,100% { transform: rotate(30deg) translate(0,0); }
+      50%      { transform: rotate(25deg) translate(6px,-8px); }
+    }
+    @keyframes cursorPoke {
+      0%,100% { transform: scale(1) translateY(0); }
+      40%      { transform: scale(0.9) translateY(6px); }
+      60%      { transform: scale(1.1) translateY(-4px); }
+    }
+    @keyframes ripple {
+      0%   { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    /* ── 피처 섹션 ── */
+    .features {
+      display: flex;
+      gap: clamp(12px, 2vw, 24px);
+      padding: clamp(20px, 5vh, 60px) clamp(16px, 5vw, 80px);
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,215,0,0.1);
+      border-bottom: 1px solid rgba(255,215,0,0.1);
+    }
+
+    .feat-card {
+      flex: 1;
+      background: var(--navy2);
+      border: 1px solid rgba(255,215,0,0.15);
+      border-radius: clamp(12px, 2vw, 20px);
+      padding: clamp(16px, 3vw, 28px);
+      display: flex;
+      align-items: flex-start;
+      gap: clamp(12px, 2vw, 20px);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feat-card:hover { border-color: rgba(245,184,0,0.4); transform: translateY(-3px); }
+
+    .feat-icon-wrap {
+      width: clamp(48px, 7vw, 72px);
+      height: clamp(48px, 7vw, 72px);
+      background: rgba(245,184,0,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(22px, 3.5vw, 36px);
+      flex-shrink: 0;
+    }
+
+    .feat-text h3 {
+      font-size: clamp(14px, 1.6vw, 18px);
+      color: var(--gold2);
+      margin-bottom: 6px;
+    }
+
+    .feat-text p {
+      font-size: clamp(11px, 1.2vw, 14px);
+      font-family: 'Gaegu', sans-serif;
+      color: var(--muted);
       line-height: 1.6;
     }
-    .footer strong { color: #555; }
+
+    /* ── 참여 방법 섹션 ── */
+    .howto {
+      padding: clamp(40px, 7vh, 80px) clamp(16px, 5vw, 80px);
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy2) 100%);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(18px, 2.5vw, 28px);
+      color: var(--gold2);
+      margin-bottom: clamp(28px, 5vh, 52px);
+      letter-spacing: 6px;
+    }
+    .section-title::before { content: '♦ '; font-size: 0.7em; }
+    .section-title::after  { content: ' ♦'; font-size: 0.7em; }
+
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1.5vw, 16px);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .step {
+      flex: 1;
+      background: var(--navy2);
+      border: 1px solid rgba(255,215,0,0.15);
+      border-radius: clamp(12px, 2vw, 18px);
+      padding: clamp(16px, 2.5vw, 28px) clamp(12px, 1.5vw, 20px);
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    .step:hover { border-color: rgba(245,184,0,0.4); }
+
+    .step-num {
+      font-size: clamp(11px, 1.3vw, 15px);
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .step-icon {
+      width: clamp(48px, 6vw, 72px);
+      height: clamp(48px, 6vw, 72px);
+      background: rgba(245,184,0,0.12);
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(20px, 3vw, 32px);
+    }
+
+    .step h4 {
+      font-size: clamp(12px, 1.4vw, 16px);
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .step p {
+      font-size: clamp(10px, 1.1vw, 13px);
+      font-family: 'Gaegu', sans-serif;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .step-arrow {
+      color: rgba(245,184,0,0.5);
+      font-size: clamp(18px, 2.5vw, 30px);
+      flex-shrink: 0;
+    }
+
+    /* ── 랭킹 섹션 ── */
+    #ranking {
+      padding: clamp(40px, 7vh, 80px) clamp(16px, 5vw, 80px);
+      background: var(--navy3);
+      border-top: 1px solid rgba(255,215,0,0.12);
+    }
+
+    .ranking-container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .ranking-table {
+      background: var(--navy2);
+      border: 1px solid rgba(255,215,0,0.15);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .ranking-header {
+      display: grid;
+      grid-template-columns: 48px 1fr 1fr 120px;
+      padding: 12px 20px;
+      background: rgba(245,184,0,0.1);
+      border-bottom: 1px solid rgba(255,215,0,0.15);
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+
+    .ranking-item {
+      display: grid;
+      grid-template-columns: 48px 1fr 1fr 120px;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 14px;
+      align-items: center;
+      transition: background 0.15s;
+    }
+    .ranking-item:last-child { border-bottom: none; }
+    .ranking-item:hover { background: rgba(255,255,255,0.03); }
+
+    .ranking-item.rank-1 { background: rgba(255,215,0,0.08); }
+    .ranking-item.rank-2 { background: rgba(192,192,192,0.06); }
+    .ranking-item.rank-3 { background: rgba(205,127,50,0.06); }
+
+    .rank-medal { font-size: 18px; }
+    .rank-name  { color: var(--text); }
+    .rank-date  { color: var(--muted); font-size: 12px; font-family: 'Gaegu', sans-serif; }
+    .rank-score { color: var(--gold2); font-weight: 900; text-align: right; }
+
+    .ranking-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-family: 'Gaegu', sans-serif;
+      font-size: 15px;
+    }
+
+    /* ── 통계 바 ── */
+    .stats-bar {
+      background: var(--navy2);
+      border-top: 1px solid rgba(255,215,0,0.15);
+      display: flex;
+      align-items: stretch;
+    }
+
+    .stat-item {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 1.5vw, 20px);
+      padding: clamp(16px, 3vh, 28px) clamp(16px, 3vw, 40px);
+      border-right: 1px solid rgba(255,215,0,0.1);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-icon {
+      font-size: clamp(28px, 4vw, 48px);
+      flex-shrink: 0;
+    }
+
+    .stat-label {
+      font-size: clamp(10px, 1.2vw, 13px);
+      color: var(--muted);
+      font-family: 'Gaegu', sans-serif;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 900;
+      color: var(--gold);
+    }
+
+    .stat-value span { color: var(--text); font-size: 0.7em; margin-left: 2px; }
+
+    /* ── 푸터 ── */
+    footer {
+      background: #030912;
+      border-top: 1px solid rgba(255,215,0,0.08);
+      padding: clamp(20px, 4vh, 36px) clamp(16px, 5vw, 80px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 16px;
+      color: var(--gold2);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer-links a:hover { color: var(--gold2); }
+
+    .footer-note {
+      font-size: 11px;
+      color: #334;
+      font-family: 'Gaegu', sans-serif;
+      text-align: center;
+      flex: 0 0 100%;
+    }
+
+    /* ── 모바일 반응형 ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta   { display: none; }
+      .nav-hamburger { display: flex; margin-left: auto; }
+
+      .hero {
+        flex-direction: column;
+        padding-top: 80px;
+        padding-bottom: 40px;
+        min-height: auto;
+      }
+
+      .hero-content { max-width: 100%; text-align: center; }
+      .hero-btns    { justify-content: center; }
+
+      .hero-visual {
+        width: 100%;
+        max-width: 100%;
+        height: 260px;
+        min-width: 0;
+      }
+
+      .features {
+        flex-direction: column;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .feat-card {
+        padding: 16px;
+      }
+
+      .steps {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .step-arrow {
+        text-align: center;
+        transform: rotate(90deg);
+        font-size: 20px;
+        align-self: center;
+      }
+
+      .stats-bar {
+        flex-direction: column;
+      }
+      .stat-item {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,215,0,0.1);
+      }
+      .stat-item:last-child { border-bottom: none; }
+
+      .ranking-header,
+      .ranking-item {
+        grid-template-columns: 40px 1fr 90px;
+      }
+      .rank-date { display: none; }
+
+      footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* ── 버전 선택 모달 ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      backdrop-filter: blur(6px);
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--navy2);
+      border: 1px solid rgba(245,184,0,0.3);
+      border-radius: 24px;
+      padding: clamp(28px, 4vw, 48px);
+      max-width: 520px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transform: scale(0.9);
+      transition: transform 0.2s;
+    }
+    .modal-overlay.open .modal { transform: scale(1); }
+
+    .modal-title {
+      text-align: center;
+      font-size: 22px;
+      color: var(--gold2);
+    }
+
+    .modal-cards {
+      display: flex;
+      gap: 16px;
+    }
+
+    .modal-card {
+      flex: 1;
+      background: var(--navy3);
+      border: 2px solid rgba(255,215,0,0.2);
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .modal-card:hover { border-color: var(--gold2); transform: translateY(-4px); }
+    .modal-card:active { transform: scale(0.97); }
+
+    .modal-card .m-icon { font-size: 40px; }
+    .modal-card .m-title { font-size: 16px; color: var(--gold2); }
+    .modal-card .m-desc { font-size: 12px; font-family: 'Gaegu', sans-serif; color: var(--muted); line-height: 1.5; }
+
+    .modal-close {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .modal-close:hover { color: var(--text); }
   </style>
 </head>
 <body>
 
-  <div>
-    <div class="title-main">돈벼락</div>
-    <div class="title-sub">MONEY STORM</div>
+<!-- ── 네비게이션 ── -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-icon">🪙</div>
+    돈벼락 게임
+  </div>
+  <div class="nav-links">
+    <a href="#features">이벤트</a>
+    <a href="#howto">참여방법</a>
+    <a href="#ranking">랭킹</a>
+    <a href="mobile/">모바일</a>
+    <a href="pc/">PC버전</a>
+  </div>
+  <button class="nav-cta" onclick="openModal()">⚡ 게임 시작하기</button>
+  <div class="nav-hamburger" onclick="openModal()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── 히어로 ── -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">행동인식! 콕콕 터치!</div>
+    <h1 class="hero-title">돈벼락 게임</h1>
+    <p class="hero-desc">
+      하늘에서 떨어지는 돈을 손가락으로 콕콕!<br>
+      모은 돈이 마을통장에 차곡차곡 쌓여요!
+    </p>
+    <p class="hero-highlight">마을통장이 넘쳐흘 때까지 도전하세요!</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="openModal()">▶ 게임 시작하기</button>
+      <button class="btn-secondary" onclick="scrollToRanking()">🏆 랭킹 보기</button>
+    </div>
   </div>
 
-  <div class="desc">
-    날아다니는 지폐와 동전을<br>
-    <strong>손가락으로 콕콕콕</strong> 잡아라! ⏱ 60초 승부
-  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="vis-glow"></div>
 
-  <div class="cards">
+    <!-- 날아다니는 지폐 -->
+    <div class="vis-bill bill-50k">50,000</div>
+    <div class="vis-bill bill-10k">10,000</div>
+    <div class="vis-bill bill-5k">5,000</div>
+    <div class="vis-bill bill-1k">1,000</div>
 
-    <a class="card" href="pc/">
-      <div class="card-icon">💻</div>
-      <div class="card-title">PC로 하기</div>
-      <div class="card-tags">
-        <span class="tag">🎥 웹캠 손 인식</span>
-        <span class="tag">☝️ 손가락 조작</span>
-        <span class="tag">🌐 Chrome 필수</span>
+    <!-- 손가락 커서 -->
+    <div class="vis-cursor">☝️</div>
+    <div class="vis-cursor2">☝️</div>
+
+    <!-- 리플 이펙트 -->
+    <div class="vis-ripple vis-ripple1"></div>
+    <div class="vis-ripple vis-ripple2"></div>
+
+    <!-- 마을통장 -->
+    <div class="vis-bankbook">
+      <div class="bankbook-title">마을통장</div>
+      <div class="bankbook-sub">마을은행</div>
+      <div class="bankbook-lines">
+        <span></span><span></span><span></span>
       </div>
-      <div class="card-btn">시작하기 →</div>
-    </a>
+    </div>
 
-    <a class="card" href="mobile/">
-      <div class="card-icon">📱</div>
-      <div class="card-title">핸드폰으로 하기</div>
-      <div class="card-tags">
-        <span class="tag">👆 화면 터치 조작</span>
-        <span class="tag">📐 가로 모드 권장</span>
-        <span class="tag">✅ 모든 브라우저</span>
+    <!-- 동전 더미 -->
+    <div class="vis-coinpile">
+      <div class="coin-row">
+        <div class="vis-coin small">₩</div>
+        <div class="vis-coin small">₩</div>
+        <div class="vis-coin small">₩</div>
+        <div class="vis-coin small">₩</div>
+        <div class="vis-coin small">₩</div>
       </div>
-      <div class="card-btn">시작하기 →</div>
-    </a>
-
+      <div class="coin-row">
+        <div class="vis-coin">₩</div>
+        <div class="vis-coin">₩</div>
+        <div class="vis-coin">₩</div>
+        <div class="vis-coin">₩</div>
+      </div>
+      <div class="coin-row">
+        <div class="vis-coin">₩</div>
+        <div class="vis-coin">₩</div>
+        <div class="vis-coin">₩</div>
+        <div class="vis-coin">₩</div>
+        <div class="vis-coin">₩</div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="footer">
-    💡 핸드폰은 공유 버튼 → <strong>홈 화면에 추가</strong>하면 앱처럼 전체화면으로!
+<!-- ── 피처 카드 ── -->
+<section class="features" id="features">
+  <div class="feat-card">
+    <div class="feat-icon-wrap">👆💰</div>
+    <div class="feat-text">
+      <h3>콕콕 터치 적립</h3>
+      <p>하늘에서 떨어지는 돈을 콕콕 터치하면 포인트가 적립돼요!</p>
+    </div>
   </div>
+  <div class="feat-card">
+    <div class="feat-icon-wrap">🤸🎯</div>
+    <div class="feat-text">
+      <h3>행동인식 보너스</h3>
+      <p>몸을 움직이고 제스처를 인식하면 보너스 포인트를 획득할 수 있어요!</p>
+    </div>
+  </div>
+  <div class="feat-card">
+    <div class="feat-icon-wrap" style="font-size:22px">📒💳</div>
+    <div class="feat-text">
+      <h3>마을통장 적립</h3>
+      <p>모든 포인트는 자동으로 마을통장에 차곡차곡 쌓여요!</p>
+    </div>
+  </div>
+</section>
 
+<!-- ── 참여 방법 ── -->
+<section class="howto" id="howto">
+  <div class="section-title">참여 방법</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">✏️</div>
+      <h4>이름 입력</h4>
+      <p>랭킹에 표시될 이름이나 별명을 입력하세요</p>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">🎮</div>
+      <h4>게임 시작</h4>
+      <p>카메라로 나의 행동을 인식하고 게임 시작!</p>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">💰</div>
+      <h4>돈 콕콕 터치</h4>
+      <p>떨어지는 돈을 콕콕 터치해 포인트를 모아보세요!</p>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-icon" style="font-size:22px">📒</div>
+      <h4>마을통장 채우기</h4>
+      <p>포인트가 마을통장에 차곡차곡 쌓여요!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 랭킹 ── -->
+<section id="ranking">
+  <div style="padding: clamp(40px,7vh,80px) clamp(16px,5vw,80px) 0">
+    <div class="section-title">참가자 랭킹</div>
+    <div class="ranking-container">
+      <div class="ranking-table" id="ranking-table">
+        <div class="ranking-empty">아직 플레이 기록이 없어요!<br>첫 번째 도전자가 되세요 🎮</div>
+      </div>
+      <div style="text-align:center; margin-top:20px; padding-bottom: clamp(40px,7vh,80px)">
+        <button class="btn-primary" onclick="openModal()" style="font-size:16px; padding:14px 36px;">
+          ▶ 지금 도전하기
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 통계 바 ── -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-icon">👥</div>
+    <div>
+      <div class="stat-label">누적 참여자</div>
+      <div class="stat-value" id="stat-players">0<span>명</span></div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon">🏆</div>
+    <div>
+      <div class="stat-label">오늘의 최고 적립자</div>
+      <div class="stat-value" id="stat-top" style="font-size:clamp(14px,1.8vw,20px)">—</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon" style="font-size:28px">📒</div>
+    <div>
+      <div class="stat-label">마을통장 누적 적립액</div>
+      <div class="stat-value" id="stat-total">0<span>원</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 푸터 ── -->
+<footer>
+  <div class="footer-logo">🪙 돈벼락 게임</div>
+  <div class="footer-links">
+    <a href="pc/">PC버전</a>
+    <a href="mobile/">모바일버전</a>
+  </div>
+  <div class="footer-note">
+    📱 핸드폰은 브라우저 메뉴 → <strong style="color:#555">홈 화면에 추가</strong>하면 앱처럼 전체화면으로 즐길 수 있어요!
+  </div>
+</footer>
+
+<!-- ── 버전 선택 모달 ── -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-title">🎮 버전을 선택하세요</div>
+    <div class="modal-cards">
+      <div class="modal-card" onclick="goTo('pc/')">
+        <div class="m-icon">💻</div>
+        <div class="m-title">PC로 하기</div>
+        <div class="m-desc">🎥 웹캠 손 인식<br>☝️ 손가락 조작<br>🌐 Chrome 필수</div>
+      </div>
+      <div class="modal-card" onclick="goTo('mobile/')">
+        <div class="m-icon">📱</div>
+        <div class="m-title">핸드폰으로 하기</div>
+        <div class="m-desc">👆 화면 터치 조작<br>📐 가로 모드 권장<br>✅ 모든 브라우저</div>
+      </div>
+    </div>
+    <div class="modal-close" onclick="closeModal()">✕ 닫기</div>
+  </div>
+</div>
+
+<script>
+  // ── 모달 ──
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+  function goTo(path) { window.location.href = path; }
+
+  function scrollToRanking() {
+    document.getElementById('ranking').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── localStorage 통계/랭킹 로딩 ──
+  const PLAYERS_KEY = 'donbyerak_mobile_ranking';
+
+  function loadStats() {
+    let players = [];
+    try { players = JSON.parse(localStorage.getItem(PLAYERS_KEY) || '[]'); } catch {}
+
+    // 누적 참여자
+    document.getElementById('stat-players').innerHTML =
+      players.length.toLocaleString() + '<span>명</span>';
+
+    // 마을통장 누적 적립액
+    const totalSum = players.reduce((s, p) => s + (p.score || 0), 0);
+    document.getElementById('stat-total').innerHTML =
+      formatWon(totalSum) + '<span>원</span>';
+
+    // 오늘의 최고 적립자
+    const today = new Date().toLocaleDateString('ko-KR');
+    const todayTop = players.filter(p => p.date === today).sort((a,b) => b.score - a.score)[0];
+    document.getElementById('stat-top').innerHTML = todayTop
+      ? `${todayTop.name} <span>${formatWon(todayTop.score)}점</span>`
+      : '—';
+
+    // 랭킹 테이블
+    const table = document.getElementById('ranking-table');
+    if (players.length === 0) {
+      table.innerHTML = '<div class="ranking-empty">아직 플레이 기록이 없어요!<br>첫 번째 도전자가 되세요 🎮</div>';
+      return;
+    }
+
+    const medals = ['🥇','🥈','🥉'];
+    table.innerHTML =
+      '<div class="ranking-header"><span>순위</span><span>이름</span><span>날짜</span><span style="text-align:right">적립액</span></div>' +
+      players.slice(0, 10).map((p, i) => {
+        const cls = i < 3 ? ` rank-${i+1}` : '';
+        return `<div class="ranking-item${cls}">
+          <span class="rank-medal">${medals[i] || (i+1) + '.'}</span>
+          <span class="rank-name">${p.name || '익명'}</span>
+          <span class="rank-date">${p.date || ''}</span>
+          <span class="rank-score">${formatWon(p.score)}원</span>
+        </div>`;
+      }).join('');
+  }
+
+  function formatWon(n) {
+    if (n >= 100000000) return (n / 100000000).toFixed(1).replace(/\.0$/, '') + '억';
+    if (n >= 10000) return Math.floor(n / 10000).toLocaleString() + '만 ' + (n % 10000 > 0 ? (n % 10000).toLocaleString() : '');
+    return n.toLocaleString();
+  }
+
+  loadStats();
+</script>
 </body>
 </html>
