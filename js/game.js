@@ -220,6 +220,7 @@ const Game = (() => {
     const elapsed = (timestamp - startTime) / 1000;
     timeLeft = Math.max(0, GAME_DURATION - elapsed);
     const config = getDifficultyConfig(elapsed);
+    config.spawnAreaW = canvas.width - 270;
 
     // 1. Webcam (mirrored)
     ctx.save();

@@ -1,21 +1,47 @@
 (() => {
   // ── DOM refs ──
   const screens = {
-    start: document.getElementById('screen-start'),
+    start:     document.getElementById('screen-start'),
+    name:      document.getElementById('screen-name'),
     countdown: document.getElementById('screen-countdown'),
-    game: document.getElementById('screen-game'),
-    gameover: document.getElementById('screen-gameover')
+    game:      document.getElementById('screen-game'),
+    gameover:  document.getElementById('screen-gameover')
   };
-  const videoEl    = document.getElementById('webcam');
-  const canvasEl   = document.getElementById('game-canvas');
-  const countdownNum = document.getElementById('countdown-number');
-  const countdownTxt = document.getElementById('countdown-text');
-  const btnStart   = document.getElementById('btn-start');
-  const btnRetry   = document.getElementById('btn-retry');
-  const bankTotal  = document.getElementById('bank-total');
-  const missionText = document.getElementById('mission-text');
-  const gameoverScore = document.getElementById('gameover-score-value');
-  const rankingList   = document.getElementById('ranking-list');
+  const videoEl        = document.getElementById('webcam');
+  const canvasEl       = document.getElementById('game-canvas');
+  const countdownNum   = document.getElementById('countdown-number');
+  const countdownTxt   = document.getElementById('countdown-text');
+  const btnStart       = document.getElementById('btn-start');
+  const btnRetry       = document.getElementById('btn-retry');
+  const btnNameConfirm = document.getElementById('btn-name-confirm');
+  const btnNameSkip    = document.getElementById('btn-name-skip');
+  const nameInput      = document.getElementById('player-name-input');
+  const bankTotal      = document.getElementById('bank-total');
+  const missionText    = document.getElementById('mission-text');
+  const gameoverScore  = document.getElementById('gameover-score-value');
+  const rankingList    = document.getElementById('ranking-list');
+  const lrList         = document.getElementById('lr-list');
+
+  // ── 공유 랭킹 (PC + 모바일 동일 key) ──────────────────────
+  const PLAYERS_KEY = 'donbyerak_mobile_ranking';
+  const MAX_PLAYERS = 20;
+  const MEDALS = ['🥇', '🥈', '🥉', '4.', '5.', '6.', '7.'];
+
+  let playerName = '';
+
+  function getMobilePlayers() {
+    try { return JSON.parse(localStorage.getItem(PLAYERS_KEY) || '[]'); } catch { return []; }
+  }
+
+  function saveMobilePlayer(name, score) {
+    const players = getMobilePlayers();
+    const entry = { name, score, date: new Date().toLocaleDateString('ko-KR') };
+    players.push(entry);
+    players.sort((a, b) => b.score - a.score);
+    const top = players.slice(0, MAX_PLAYERS);
+    try { localStorage.setItem(PLAYERS_KEY, JSON.stringify(top)); } catch {}
+    return top.findIndex(p => p.name === name && p.score === score) + 1;
+  }
 
   // ── 미션 상황 텍스트 ──────────────────────────────────────
   const MISSIONS = [
@@ -47,11 +73,35 @@
   let gameInited  = false;
 
   function showScreen(name) {
-    Object.values(screens).forEach(s => s.classList.remove('active'));
-    screens[name].classList.add('active');
+    Object.values(screens).forEach(s => { if (s) s.classList.remove('active'); });
+    if (screens[name]) screens[name].classList.add('active');
   }
 
-  // ── 웹캠 자동 초기화 (페이지 로드 즉시) ──────────────────
+  // ── 실시간 랭킹 오버레이 업데이트 ─────────────────────────
+  function updateLiveRanking() {
+    if (!lrList) return;
+    const currentScore = Score.getTotal();
+    const currentName  = playerName || '나';
+    const stored       = getMobilePlayers();
+
+    const combined = stored.map(p => ({ ...p, _current: false }));
+    combined.push({ name: currentName, score: currentScore, _current: true });
+    combined.sort((a, b) => b.score - a.score);
+
+    const top = combined.slice(0, 7);
+    lrList.innerHTML = '';
+    top.forEach((p, i) => {
+      const row = document.createElement('div');
+      row.className = 'lr-row' + (p._current ? ' lr-current' : '');
+      row.innerHTML =
+        `<span class="lr-rank">${MEDALS[i] || (i + 1) + '.'}</span>` +
+        `<span class="lr-name">${p.name}</span>` +
+        `<span class="lr-score">${Score.formatWon(p.score)}</span>`;
+      lrList.appendChild(row);
+    });
+  }
+
+  // ── 웹캠 자동 초기화 ─────────────────────────────────────
   function initWebcam() {
     return HandTracker.init(videoEl, (results) => {
       Game.setHandResults(results);
@@ -63,10 +113,7 @@
     });
   }
 
-  // 페이지 로드 즉시 웹캠 권한 요청
-  window.addEventListener('load', () => {
-    initWebcam();
-  });
+  window.addEventListener('load', () => { initWebcam(); });
 
   // ── Bank UI ──────────────────────────────────────────────
   function resetBankUI() {
@@ -76,6 +123,7 @@
       if (bankAmounts[d]) bankAmounts[d].textContent = '';
     });
     updateMission(0);
+    updateLiveRanking();
   }
 
   function updateBankUI(newDenom) {
@@ -85,6 +133,7 @@
     bankTotal.classList.add('pop');
     setTimeout(() => bankTotal.classList.remove('pop'), 200);
     updateMission(total);
+    updateLiveRanking();
 
     Object.keys(bankRows).forEach(d => {
       const denom = +d;
@@ -128,35 +177,47 @@
 
   // ── Game over ────────────────────────────────────────────
   function showGameOver() {
-    const total   = Score.getTotal();
-    const myRank  = Score.saveRanking(total);
-    const rankings = Score.getRankings();
+    const total  = Score.getTotal();
+    const myRank = saveMobilePlayer(playerName || '익명', total);
+    const players = getMobilePlayers();
 
     gameoverScore.textContent = Score.formatWon(total);
     gameoverScore.className   = myRank === 1 ? 'gameover-score-value new-record' : 'gameover-score-value';
 
     rankingList.innerHTML = '';
-    rankings.forEach((r, i) => {
-      const rankNum = i + 1;
-      const isCurrent = (r.score === total && myRank === rankNum);
+    players.forEach((p, i) => {
+      const rankNum   = i + 1;
+      const isCurrent = (p.score === total && p.name === (playerName || '익명') && rankNum === myRank);
       const row = document.createElement('div');
-      row.className = `ranking-row rank-${rankNum}${isCurrent ? ' current' : ''}`;
-      row.innerHTML = `
-        <span class="rank">${rankNum === 1 ? '🥇' : rankNum === 2 ? '🥈' : rankNum === 3 ? '🥉' : rankNum + '.'}</span>
-        <span class="score">${Score.formatWon(r.score)}</span>
-        <span class="date">${r.date}</span>`;
+      row.className = `ranking-row rank-${Math.min(rankNum, 3)}${isCurrent ? ' current' : ''}`;
+      row.innerHTML =
+        `<span class="rank">${rankNum === 1 ? '🥇' : rankNum === 2 ? '🥈' : rankNum === 3 ? '🥉' : rankNum + '.'}</span>` +
+        `<span class="score" style="margin-right:6px">${p.name}</span>` +
+        `<span class="score">${Score.formatWon(p.score)}</span>` +
+        `<span class="date">${p.date}</span>`;
       rankingList.appendChild(row);
     });
 
     showScreen('gameover');
   }
 
-  // ── 게임 시작 ─────────────────────────────────────────────
-  async function startGame() {
+  // ── 이름 입력 화면 ────────────────────────────────────────
+  function showNameScreen() {
+    if (nameInput) nameInput.value = '';
+    showScreen('name');
+    if (nameInput) setTimeout(() => nameInput.focus(), 300);
+  }
+
+  function confirmName() {
+    playerName = (nameInput ? nameInput.value.trim() : '') || '익명';
+    launchGame();
+  }
+
+  // ── 게임 실제 시작 ────────────────────────────────────────
+  async function launchGame() {
     Sound.init();
     Sound.resume();
 
-    // 웹캠이 아직 준비 안 됐으면 다시 시도
     if (!webcamReady) {
       await initWebcam();
       if (!webcamReady) {
@@ -177,10 +238,14 @@
     });
   }
 
-  btnStart.addEventListener('click', startGame);
-  btnRetry.addEventListener('click', startGame);
+  // ── 이벤트 바인딩 ─────────────────────────────────────────
+  btnStart.addEventListener('click', showNameScreen);
+  btnRetry.addEventListener('click', showNameScreen);
 
-  // ── HUD 조작법 업데이트 ───────────────────────────────────
+  if (btnNameConfirm) btnNameConfirm.addEventListener('click', confirmName);
+  if (btnNameSkip)    btnNameSkip.addEventListener('click', () => { playerName = '익명'; launchGame(); });
+  if (nameInput)      nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') confirmName(); });
+
   const hint = document.getElementById('gesture-hint');
   if (hint) hint.textContent = '☝️ 손가락으로 돈을 콕콕 찌르세요!';
 

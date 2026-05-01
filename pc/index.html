@@ -37,6 +37,18 @@
     <a href="../" style="color:#555; font-size:12px; margin-top:4px; text-decoration:none;">← 버전 선택으로 돌아가기</a>
   </div>
 
+  <!-- ── 이름 입력 화면 ── -->
+  <div id="screen-name" class="screen">
+    <div class="name-title">💰 참가자 이름을 입력하세요</div>
+    <div class="name-sub">랭킹에 표시될 이름이에요</div>
+    <input type="text" id="player-name-input" class="name-input"
+      placeholder="이름 또는 별명" maxlength="10" autocomplete="off">
+    <div class="name-btns">
+      <button id="btn-name-skip" class="btn-skip">건너뛰기</button>
+      <button id="btn-name-confirm" class="btn-confirm">확인 ✓</button>
+    </div>
+  </div>
+
   <!-- ── 카운트다운 화면 ── -->
   <div id="screen-countdown" class="screen">
     <div id="countdown-number">3</div>
@@ -56,6 +68,12 @@
     </div>
 
     <div id="difficulty-badge">⚡ 보통</div>
+
+    <!-- 실시간 랭킹 패널 (좌하단) -->
+    <div id="live-ranking">
+      <div class="lr-title">🏆 실시간 랭킹</div>
+      <div id="lr-list"></div>
+    </div>
 
     <div id="bank-panel">
       <div class="bb-card">
@@ -104,7 +122,7 @@
       <div id="gameover-score-value" class="gameover-score-value">₩0</div>
     </div>
     <div class="ranking-box">
-      <h3>🏆 역대 기록</h3>
+      <h3>🏆 참가자 랭킹</h3>
       <div id="ranking-list"></div>
     </div>
     <button id="btn-retry" class="btn-retry">다시 하기 🔄</button>

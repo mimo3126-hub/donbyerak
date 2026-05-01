@@ -13,7 +13,7 @@ const Money = (() => {
 
   // ── Bill (지폐) ──────────────────────────────────────────
   class Bill {
-    constructor(canvasW, canvasH, windStrength) {
+    constructor(canvasW, canvasH, windStrength, spawnAreaW) {
       // Denomination probabilities
       const r = Math.random();
       if (r < 0.30)      this.denom = 1000;
@@ -26,15 +26,18 @@ const Money = (() => {
       this.w = baseW * scale;
       this.h = this.w * 0.5;
 
+      const sw = spawnAreaW || canvasW;  // 통장 패널 제외한 유효 영역
+      this.spawnAreaW = sw;
+
       // 60% 확률로 화면 중앙 영역, 40% 확률로 가장자리 진입
       if (Math.random() < 0.6) {
-        this.x = canvasW * 0.15 + Math.random() * canvasW * 0.7;
+        this.x = sw * 0.1 + Math.random() * sw * 0.8;
         this.y = canvasH * 0.1  + Math.random() * canvasH * 0.8;
       } else {
         const edge = Math.floor(Math.random() * 4);
-        if (edge === 0) { this.x = Math.random() * canvasW; this.y = -this.h; }
-        else if (edge === 1) { this.x = canvasW + this.w; this.y = Math.random() * canvasH; }
-        else if (edge === 2) { this.x = Math.random() * canvasW; this.y = canvasH + this.h; }
+        if (edge === 0) { this.x = Math.random() * sw; this.y = -this.h; }
+        else if (edge === 1) { this.x = sw + this.w; this.y = Math.random() * canvasH; }
+        else if (edge === 2) { this.x = Math.random() * sw; this.y = canvasH + this.h; }
         else { this.x = -this.w; this.y = Math.random() * canvasH; }
       }
 
@@ -84,8 +87,9 @@ const Money = (() => {
 
       // Wrap around edges (stay on screen)
       const pad = 60;
-      if (this.x < -pad) this.x = canvasW + pad;
-      if (this.x > canvasW + pad) this.x = -pad;
+      const sw = this.spawnAreaW || canvasW;
+      if (this.x < -pad) this.x = sw + pad;
+      if (this.x > sw + pad) this.x = -pad;
       if (this.y < -pad) this.y = canvasH + pad;
       if (this.y > canvasH + pad) this.y = -pad;
     }
@@ -265,7 +269,7 @@ const Money = (() => {
 
       // Spawn bills
       if (time - this.lastBillSpawn > billInterval && this.bills.filter(b => b.alive && !b.caught).length < maxBills) {
-        this.bills.push(new Bill(canvasW, canvasH, windStrength));
+        this.bills.push(new Bill(canvasW, canvasH, windStrength, config.spawnAreaW));
         this.lastBillSpawn = time;
       }
 
