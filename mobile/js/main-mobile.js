@@ -1,20 +1,45 @@
 (() => {
+  // ── DOM refs ──────────────────────────────────────────────
   const screens = {
     start:     document.getElementById('screen-start'),
+    name:      document.getElementById('screen-name'),
     countdown: document.getElementById('screen-countdown'),
     game:      document.getElementById('screen-game'),
     gameover:  document.getElementById('screen-gameover')
   };
-  const canvasEl      = document.getElementById('game-canvas');
-  const countdownNum  = document.getElementById('countdown-number');
-  const countdownTxt  = document.getElementById('countdown-text');
-  const btnStart      = document.getElementById('btn-start');
-  const btnRetry      = document.getElementById('btn-retry');
-  const bankTotal     = document.getElementById('bank-total');
-  const missionText   = document.getElementById('mission-text');
-  const gameoverScore = document.getElementById('gameover-score-value');
-  const rankingList   = document.getElementById('ranking-list');
+  const canvasEl         = document.getElementById('game-canvas');
+  const countdownNum     = document.getElementById('countdown-number');
+  const countdownTxt     = document.getElementById('countdown-text');
+  const btnStart         = document.getElementById('btn-start');
+  const btnRetry         = document.getElementById('btn-retry');
+  const btnNameConfirm   = document.getElementById('btn-name-confirm');
+  const btnNameSkip      = document.getElementById('btn-name-skip');
+  const nameInput        = document.getElementById('player-name-input');
+  const bankTotal        = document.getElementById('bank-total');
+  const missionText      = document.getElementById('mission-text');
+  const gameoverScore    = document.getElementById('gameover-score-value');
+  const rankingList      = document.getElementById('ranking-list');
+  const lrList           = document.getElementById('lr-list');
 
+  // ── 모바일 전용 랭킹 (이름 포함) ─────────────────────────
+  const MOBILE_KEY  = 'donbyerak_mobile_ranking';
+  const MAX_PLAYERS = 20;
+
+  function getMobilePlayers() {
+    try { return JSON.parse(localStorage.getItem(MOBILE_KEY) || '[]'); } catch { return []; }
+  }
+
+  function saveMobilePlayer(name, score) {
+    const players = getMobilePlayers();
+    const entry = { name, score, date: new Date().toLocaleDateString('ko-KR') };
+    players.push(entry);
+    players.sort((a, b) => b.score - a.score);
+    const top = players.slice(0, MAX_PLAYERS);
+    try { localStorage.setItem(MOBILE_KEY, JSON.stringify(top)); } catch {}
+    return top.findIndex(p => p.name === name && p.score === score) + 1;
+  }
+
+  // ── 미션 텍스트 ───────────────────────────────────────────
   const MISSIONS = [
     { min: 5000000, cls: 'high', msg: '🏛️ 마을회관이 눈앞에!!' },
     { min: 3000000, cls: 'high', msg: '🎊 마을 잔치 해볼 수 있겠는데?' },
@@ -36,6 +61,7 @@
     missionText.className = 'mission-box' + (m.cls ? ' ' + m.cls : '');
   }
 
+  // ── 은행 UI ───────────────────────────────────────────────
   const bankRows   = {
     50000: document.getElementById('bank-50000'), 10000: document.getElementById('bank-10000'),
     5000:  document.getElementById('bank-5000'),  1000:  document.getElementById('bank-1000'),
@@ -53,10 +79,39 @@
   };
 
   let gameInited = false;
+  let playerName = '';
+
+  // ── 실시간 랭킹 오버레이 업데이트 ─────────────────────────
+  const MEDALS = ['🥇', '🥈', '🥉', '4.', '5.', '6.', '7.'];
+
+  function updateLiveRanking() {
+    if (!lrList) return;
+    const currentScore = Score.getTotal();
+    const currentName  = playerName || '나';
+    const stored       = getMobilePlayers();
+
+    // 저장된 플레이어 + 현재 진행 중 점수 합산
+    const combined = stored.map(p => ({ ...p, _current: false }));
+    // 현재 플레이어가 이미 저장된 경우 제외 (게임 중이므로 아직 저장 안 됨)
+    combined.push({ name: currentName, score: currentScore, _current: true });
+    combined.sort((a, b) => b.score - a.score);
+
+    const top = combined.slice(0, 7);
+    lrList.innerHTML = '';
+    top.forEach((p, i) => {
+      const row = document.createElement('div');
+      row.className = 'lr-row' + (p._current ? ' lr-current' : '');
+      row.innerHTML =
+        `<span class="lr-rank">${MEDALS[i] || (i + 1) + '.'}</span>` +
+        `<span class="lr-name">${p.name}</span>` +
+        `<span class="lr-score">${Score.formatWon(p.score)}</span>`;
+      lrList.appendChild(row);
+    });
+  }
 
   function showScreen(name) {
-    Object.values(screens).forEach(s => s.classList.remove('active'));
-    screens[name].classList.add('active');
+    Object.values(screens).forEach(s => { if (s) s.classList.remove('active'); });
+    if (screens[name]) screens[name].classList.add('active');
   }
 
   function resetBankUI() {
@@ -66,6 +121,7 @@
       if (bankAmounts[d]) bankAmounts[d].textContent = '';
     });
     updateMission(0);
+    updateLiveRanking();
   }
 
   function updateBankUI(newDenom) {
@@ -75,6 +131,7 @@
     bankTotal.classList.add('pop');
     setTimeout(() => bankTotal.classList.remove('pop'), 200);
     updateMission(total);
+    updateLiveRanking();
 
     Object.keys(bankRows).forEach(d => {
       const denom = +d;
@@ -89,6 +146,7 @@
     });
   }
 
+  // ── 카운트다운 ────────────────────────────────────────────
   function runCountdown(callback) {
     showScreen('countdown');
     let count = 3;
@@ -115,31 +173,45 @@
     tick();
   }
 
+  // ── 게임오버 ──────────────────────────────────────────────
   function showGameOver() {
-    const total    = Score.getTotal();
-    const myRank   = Score.saveRanking(total);
-    const rankings = Score.getRankings();
+    const total  = Score.getTotal();
+    const myRank = saveMobilePlayer(playerName || '익명', total);
+    const players = getMobilePlayers();
 
     gameoverScore.textContent = Score.formatWon(total);
     gameoverScore.className   = myRank === 1 ? 'gameover-score-value new-record' : 'gameover-score-value';
 
     rankingList.innerHTML = '';
-    rankings.forEach((r, i) => {
-      const rankNum = i + 1;
-      const isCurrent = (r.score === total && myRank === rankNum);
+    players.forEach((p, i) => {
+      const rankNum   = i + 1;
+      const isCurrent = (p.score === total && p.name === (playerName || '익명') && rankNum === myRank);
       const row = document.createElement('div');
-      row.className = `ranking-row rank-${rankNum}${isCurrent ? ' current' : ''}`;
-      row.innerHTML = `
-        <span class="rank">${rankNum === 1 ? '🥇' : rankNum === 2 ? '🥈' : rankNum === 3 ? '🥉' : rankNum + '.'}</span>
-        <span class="score">${Score.formatWon(r.score)}</span>
-        <span class="date">${r.date}</span>`;
+      row.className = `ranking-row rank-${Math.min(rankNum, 3)}${isCurrent ? ' current' : ''}`;
+      row.innerHTML =
+        `<span class="rank">${rankNum === 1 ? '🥇' : rankNum === 2 ? '🥈' : rankNum === 3 ? '🥉' : rankNum + '.'}</span>` +
+        `<span class="score" style="margin-right:6px">${p.name}</span>` +
+        `<span class="score">${Score.formatWon(p.score)}</span>` +
+        `<span class="date">${p.date}</span>`;
       rankingList.appendChild(row);
     });
 
     showScreen('gameover');
   }
 
-  // ── 전체화면 + 화면 방향 고정 ───────────────────────────────
+  // ── 이름 입력 화면 ────────────────────────────────────────
+  function showNameScreen() {
+    nameInput.value = '';
+    showScreen('name');
+    setTimeout(() => nameInput.focus(), 300);
+  }
+
+  function confirmName() {
+    playerName = nameInput.value.trim() || '익명';
+    launchGame();
+  }
+
+  // ── 전체화면 + 방향 고정 ──────────────────────────────────
   function requestFullscreenLandscape() {
     const el = document.documentElement;
     const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
@@ -149,31 +221,12 @@
     }
   }
 
-  // ── iOS 홈 화면 추가 안내 ────────────────────────────────────
-  function showInstallHint() {
-    const hint = document.getElementById('install-hint');
-    if (!hint) return;
-    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    const isAndroid = /android/i.test(navigator.userAgent);
-    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: fullscreen)').matches;
-    if (isStandalone) { hint.style.display = 'none'; return; }
-    if (isIOS) {
-      hint.innerHTML = '📲 Safari 공유 버튼 → <strong>홈 화면에 추가</strong>하면 앱처럼 전체화면으로!';
-    } else if (isAndroid) {
-      hint.innerHTML = '📲 브라우저 메뉴 → <strong>홈 화면에 추가</strong>하면 앱처럼 전체화면으로!';
-    }
-  }
-
-  function startGame() {
-    requestFullscreenLandscape();
-    Sound.init();
-    Sound.resume();
-
+  // ── 게임 실제 시작 ────────────────────────────────────────
+  function launchGame() {
     if (!gameInited) {
       GameMobile.init(canvasEl);
       gameInited = true;
     }
-
     runCountdown(() => {
       showScreen('game');
       resetBankUI();
@@ -181,10 +234,43 @@
     });
   }
 
-  btnStart.addEventListener('click', startGame);
-  btnRetry.addEventListener('click', startGame);
+  // ── 홈 화면 추가 안내 ─────────────────────────────────────
+  function showInstallHint() {
+    const hint = document.getElementById('install-hint');
+    if (!hint) return;
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isAndroid = /android/i.test(navigator.userAgent);
+    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: fullscreen)').matches;
+    if (isStandalone) { hint.style.display = 'none'; return; }
+    if (isIOS)        hint.innerHTML = '📲 Safari 공유 버튼 → <strong>홈 화면에 추가</strong>하면 앱처럼 전체화면으로!';
+    else if (isAndroid) hint.innerHTML = '📲 브라우저 메뉴 → <strong>홈 화면에 추가</strong>하면 앱처럼 전체화면으로!';
+  }
+
+  // ── 이벤트 바인딩 ─────────────────────────────────────────
+  btnStart.addEventListener('click', () => {
+    requestFullscreenLandscape();
+    Sound.init();
+    Sound.resume();
+    showNameScreen();
+  });
+
+  btnRetry.addEventListener('click', () => {
+    Sound.init();
+    Sound.resume();
+    showNameScreen();
+  });
+
+  btnNameConfirm.addEventListener('click', confirmName);
+
+  btnNameSkip.addEventListener('click', () => {
+    playerName = '익명';
+    launchGame();
+  });
+
+  nameInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') confirmName();
+  });
 
   showInstallHint();
-
   showScreen('start');
 })();

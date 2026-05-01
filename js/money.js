@@ -178,7 +178,7 @@ const Money = (() => {
 
   // ── Coin (동전) ──────────────────────────────────────────
   class Coin {
-    constructor(canvasW, canvasH, difficulty) {
+    constructor(canvasW, canvasH, difficulty, speedMult = 1.0) {
       this.denom = Math.random() < 0.6 ? 100 : 500;
       this.r = this.denom === 500 ? 56 : 66;  // 500원 2배(28→56), 100원 3배(22→66)
 
@@ -188,7 +188,7 @@ const Money = (() => {
 
       const baseSpeed = this.denom === 500 ? 10 : 8;
       const randomMult = 2.0 + Math.random() * 2.0;  // 2.0 ~ 4.0배 랜덤
-      this.vy = (baseSpeed + difficulty * 1.5) * randomMult;
+      this.vy = (baseSpeed + difficulty * 1.5) * randomMult * speedMult;
       this.alive = true;
       this.caught = false;
       this.catchAnim = 0;
@@ -271,7 +271,7 @@ const Money = (() => {
 
       // Spawn coins
       if (time - this.lastCoinSpawn > coinInterval && this.coins.filter(c => c.alive && !c.caught).length < maxCoins) {
-        this.coins.push(new Coin(canvasW, canvasH, difficulty));
+        this.coins.push(new Coin(canvasW, canvasH, difficulty, config.coinSpeedMult || 1.0));
         this.lastCoinSpawn = time;
       }
 

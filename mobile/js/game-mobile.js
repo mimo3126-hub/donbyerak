@@ -108,9 +108,9 @@ const GameMobile = (() => {
   let touchEffects = [];
 
   function getDifficultyConfig(elapsed) {
-    if (elapsed < 20) return { billInterval: 700,  coinInterval: 2200, maxBills: 15, maxCoins: 4,  windStrength: 1.5, difficulty: 0, label: '보통', cls: '' };
-    if (elapsed < 40) return { billInterval: 500,  coinInterval: 1600, maxBills: 30, maxCoins: 7,  windStrength: 1.8, difficulty: 1, label: '빠름', cls: 'medium' };
-    return              { billInterval: 350,  coinInterval: 1100, maxBills: 30, maxCoins: 10, windStrength: 2.6, difficulty: 2, label: '폭풍', cls: 'hard' };
+    if (elapsed < 20) return { billInterval: 700,  coinInterval: 2200, maxBills: 15, maxCoins: 4,  windStrength: 1.5, difficulty: 0, coinSpeedMult: 0.5, label: '보통', cls: '' };
+    if (elapsed < 40) return { billInterval: 500,  coinInterval: 1600, maxBills: 30, maxCoins: 7,  windStrength: 1.8, difficulty: 1, coinSpeedMult: 0.5, label: '빠름', cls: 'medium' };
+    return              { billInterval: 350,  coinInterval: 1100, maxBills: 30, maxCoins: 10, windStrength: 2.6, difficulty: 2, coinSpeedMult: 0.5, label: '폭풍', cls: 'hard' };
   }
 
   function init(canvasEl) {
