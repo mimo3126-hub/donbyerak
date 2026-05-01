@@ -2,7 +2,7 @@
 
 body {
   background: #000;
-  font-family: 'Gugi', 'Gugi', 'Malgun Gothic', sans-serif;
+  font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
@@ -266,7 +266,7 @@ body {
   text-align: center;
   letter-spacing: 8px;
   padding: 4px 0 8px;
-  font-family: 'Gugi', 'Gugi', 'Malgun Gothic', sans-serif;
+  font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
 }
 
 .bb-nh-bottom {
@@ -373,7 +373,7 @@ body {
   padding: 10px 12px;
   font-size: 30px;
   font-weight: 700;
-  font-family: 'Gugi', 'Gugi', 'Malgun Gothic', sans-serif;
+  font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
   color: #FFD700;
   text-align: center;
   line-height: 1.25;
